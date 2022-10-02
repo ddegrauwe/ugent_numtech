@@ -1,0 +1,29 @@
+Advection equation with a forward spectral scheme
+=================================================
+
+1. Compiling and running
+------------------------
+
+Use the script with
+
+	./run.sh
+	
+
+2. Visualizing results in RStudio
+---------------------------------
+
+Set working directory with
+
+	setwd('H:\numtech\adveq\')
+
+Load plotting functions with
+
+	source('show.R')
+
+Animate results with
+
+	animateResults('upstream/output.dat')
+	
+Plot results on a single time step with
+
+	plotResults('upstream/output.dat',timestep=20)
