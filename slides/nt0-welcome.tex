@@ -1,0 +1,171 @@
+\documentclass[aspectratio=43,9pt]{beamer}
+\let\Tiny=\tiny
+%
+\usepackage{tikz}
+\usepackage{enumerate}
+%
+\usetheme{Boadilla}
+%
+\input{NTstyle}
+%
+\title{0. Welcome}
+%
+\begin{document}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\begin{frame}[plain]
+	\titlepage
+\end{frame}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\begin{frame}
+	%
+	\frametitle{Content}
+	%
+	\large
+	%
+	\begin{itemize}
+		\item Welcome\vspace*{1ex}
+		\item Context: why numerical techniques\vspace*{1ex}
+		\item Objectives of this course\vspace*{1ex}
+		\item Course material\vspace*{1ex}
+		\item Practical information
+	\end{itemize}		
+\end{frame}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\begin{frame}
+	%
+	\frametitle{Why numerical techniques?}
+	%
+	\begin{center}
+		%\scriptsize
+		\begin{tikzpicture}
+			\tikzstyle{every node}=[draw, text width=2.7cm, rounded corners=2pt,text centered]
+			\node [fill=blue!50!] (atm) at (-4,2) {Atmosphere};
+\uncover<2->{
+			\node (dm) at (-4,0) {Dynamic\\ Meteorology};
+			\node (pm) at (0,2) {Physical\\ Meteorology};
+			\draw [-latex,line width=1pt] (atm) to (dm);
+			\draw [-latex,line width=1pt] (atm) to (pm);
+}
+\uncover<3->{
+			\node (anal) at (-4,-2) {Analytical\\ approximations};
+			\node (da) at (4,2) {Data\\ Assimilation};
+			\node [fill=yellow] (nt) at (0,0) {Numerical\\ Techniques};
+			\node [fill=red] (nwp) at (4,0) {Weather\\ and Climate\\ Models};
+			\node (ap) at (4,-2) {Air pollution, \ldots};
+			\draw [-latex,line width=1pt] (dm) to (nt);
+			%\draw [-latex,line width=1pt] (pm) to (nwp);
+			\draw [-latex,line width=1pt] (da) to (nwp);
+			\draw [-latex,line width=1pt] (nt) to (nwp);
+			\draw [-latex,line width=1pt] (dm) to (anal);
+			\draw [-latex,line width=1pt] (pm) to (nt);
+			\draw [-latex,line width=1pt] (nwp) to (ap);
+}
+		\end{tikzpicture}
+	\end{center}
+	%
+\end{frame}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\begin{frame}
+	\frametitle{Course objectives}
+	%
+	\begin{itemize}
+		\item Get hold of problems that occur due to solving equations numerically (with a computer)\\[3ex]
+\pause
+		\item Distinguish these problems from other aspects of modeling
+		\item Develop knowledge of existing solutions to these problems
+		\item Be able to communicate with numerical analist\\[3ex]
+\pause
+		\item Don't be frightened by code\\ \quad\ldots but it's no course on Linux or Fortran either!
+	\end{itemize}
+\end{frame}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\begin{frame}
+	\frametitle{Course agenda}
+	\vspace*{-5mm}
+	\begin{center}
+		\def\arraystretch{1.2}
+		\begin{tabular}{lll}
+			date	&	16h00 (Auditorium 3.1)	&	17h30 (PC-room Konrad Zuse) \\
+		\hline
+			27/09 	&	Introduction, Stability	\\
+			04/10	&	Time discretization		&	Oscillation equation	\\
+			18/10	& 	Space discretization	&	Oscillation equation	\\
+			25/10	&	Spectral models			& 	Advection equation 		\\
+			08/11	& 	Towards nontrivial models &	Advection equation		\\
+			15/11	&	Semi-Implicit Semi-Lagrangian models \\
+			22/11	&	Parallel computing and Project assignment \\
+			29/11	&	Project session (PC-room)	\\
+			06/12	&	Project session (PC-room)	\\
+			20/12	&	Presentations
+		\end{tabular}
+		\def\arraystretch{1}
+	\end{center}
+	%
+\end{frame}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\begin{frame}
+	\frametitle{Course material}
+	\vspace*{-5mm}
+	\begin{itemize}
+		\item Slides and exercise guidelines will appear on Ufora\vspace*{3ex}
+		\item References:\vspace*{2ex}
+			\begin{itemize}
+				\item \emph{Numerical Methods for Wave Equations in Geophysical Fluid Dynamics},\\ Dale R. Durran, Springer, 1999, ISBN 0-387-98376-7.\vspace*{2ex}
+				\item \emph{Chebyshev and Fourier Spectral Methods}, John P. Boyd, Springer, 2001, ISBN 978-3-540-51487-9.\vspace*{3ex}
+			\end{itemize}
+		\item Some papers (depending on project)
+	\end{itemize}
+\end{frame}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\begin{frame}
+	%
+	\frametitle{Practical information}
+	%
+	\begin{itemize}
+		\item Check Ufora for modifications to time schedule\vspace*{2ex}
+		\item Exercises in Linux\vspace*{1ex}
+			\begin{itemize}
+				\item helios server of UGent: create account on
+					\par
+					\texttt{https://helpdesk.ugent.be/account/en/helios.php}\vspace*{1ex}
+				\item access from Windows via PuTTY (installed in PC rooms)\vspace*{1ex}
+				\item \ldots or you can try to install Linux on your laptop\vspace*{2ex}
+			\end{itemize}
+		\item Programs needed: gfortran, Rstudio\vspace*{2ex}
+		\item Evaluation: student project (2/3/4 persons) on simple model\vspace*{1ex}
+			\begin{itemize}
+				\item presentation for other students\vspace*{1ex}
+				\item (small) report
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\begin{frame}
+	\begin{center}
+		\usebeamercolor[fg]{frametitle}{%
+			\LARGE%
+			Questions?
+		}
+	\end{center}
+\end{frame}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\end{document}
+%

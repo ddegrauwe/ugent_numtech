@@ -1,0 +1,15 @@
+This example runs the advection equation with two harmonic functions
+to illustrate the difference between phase and group velocity
+
+Compile with
+
+	gfortran -I ~ddgrauwe/numtech/fft/include/ -O2 -fdefault-real-8 -o adveq adveq.F90 ~ddgrauwe/numtech/fft/lib/libfft.a
+
+Run with
+	
+	./adveq
+
+Use the ../show.R script to review results in R or RStudio with
+
+	source('../show.R')
+	animateResults('output.dat')

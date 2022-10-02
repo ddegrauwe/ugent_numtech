@@ -1,0 +1,73 @@
+%
+\let\Tiny=\tiny%			% to avoid warnings about font size
+%\usepackage{lmodern}%		% alternative method to avoid these warnings
+%
+\catcode`~=11 % make LaTeX treat tilde (~) like a normal character
+\newcommand{\urltilde}{\hbox{~}}
+\catcode`~=13 % revert back to treating tilde (~) as an active character
+%
+% misc commands
+\newcommand{\bm}[1]{\mathbf{#1}}
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newenvironment{myitemize}[1]{\vspace{#1}\begin{itemize}\setlength\itemsep{#1}}{\end{itemize}}
+%
+% pgf markers
+\usepgflibrary{plotmarks}
+%
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.8\paperwidth,ht=2.25ex,dp=1ex,left]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\hspace*{4em}\inserttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex,right]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertframenumber{} / \inserttotalframenumber\hspace*{1ex}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+%
+\setbeamertemplate{navigation symbols}{}
+%
+\setbeamertemplate{frametitle}
+{%
+	\begin{minipage}{.9\paperwidth}
+		\vspace*{1ex}%
+		\flushright%
+		%\bfseries
+		\LARGE%
+		\insertframetitle%
+	\end{minipage}%
+}
+%
+\setbeamertemplate{title page}{
+	\begin{center}
+		\vspace*{2ex}
+		\usebeamercolor[fg]{frametitle}{%
+			\Large%
+			Numerical Techniques 2022--2023\\[2ex]
+			%
+			\LARGE%
+			\inserttitle
+		}\\[6ex]
+		\usebeamercolor[fg]{normal text}{%
+			Daan Degrauwe\\[1ex]
+			\texttt{daan.degrauwe@meteo.be}\\[4ex]
+			Postgraduate Studies in Weather and Climate Modeling\\[1ex]
+			Ghent University
+		}
+	\end{center}
+}
+%
+\newcommand{\ft}[2]{{\textstyle\frac{#1}{#2}}}
+%
+% increase space around equations
+\makeatletter
+\g@addto@macro\normalsize{%
+	\setlength{\abovedisplayskip}{3ex}%
+	\setlength{\belowdisplayskip}{3ex}%
+	\setlength{\abovedisplayshortskip}{3ex}%
+	\setlength{\belowdisplayshortskip}{3ex}%
+}%
+\makeatother
+%

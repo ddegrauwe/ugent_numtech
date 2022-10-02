@@ -1,0 +1,44 @@
+Solutions for Oscillation Equation
+==================================
+
+See subdirectories for solutions of different schemes. The results for each scheme can be found in the output_*.pdf files.
+
+Following behaviour is observed:
+
+
+forward scheme
+
+	unconditionally unstable; decelerating
+	
+
+backward scheme
+
+	unconditionally stable; damping; decelerating (hard to see)
+	
+	
+trapezium scheme
+
+	neutral; decelerating
+	
+	
+matsuno scheme
+	
+	conditionally stable : damping if KAPPA*DT<1; accelerating
+
+
+leapfrog scheme
+
+	conditionally stable : neutral if KAPPA*DT<1; accelerating
+
+
+leapfrog_cm
+	
+	(leapfrog, but with ERROR in first timestep to trigger the computational mode)
+	The error stays in the solution forever.
+
+
+leapfrog_filter
+	
+	also with ERROR in the first timestep, but now the filter removes the error after a few timesteps.
+	The scheme becomes damping instead of neutral.
+

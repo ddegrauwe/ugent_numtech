@@ -1,0 +1,22 @@
+Toy-models for Numerical Techniques
+-----------------------------------
+
+1. Create (mkdir) and go to (cd) the directory where you want to play with this model
+
+2. Take a copy from these files with 
+
+	cp /users/d/ddgrauwe/numtech/2021-2022/projects/swe1D.tgz .
+
+3. Unpack the tgz archive with
+
+	tar -zxvf swe1D.tgz
+
+4. Go to the swe1D directory with
+	
+	cd swe1D
+
+5. Have fun.
+
+
+
+

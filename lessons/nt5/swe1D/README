@@ -1,0 +1,63 @@
+1D Shallow Water Equations
+==========================
+
+This program models the linearized 1D SWE, defined as
+
+   du/dt + UM du/dx +  g dh/dx = 0
+   dh/dt + HM du/dx + UM dh/dx = 0
+
+where UM and HM are the constant background horizontal speed and the water height, 
+u and h are the perturbations on the horizontal speed and the water height.
+g is the gravitational acceleration.
+
+This program uses leapfrog time integration, centered second-order space differencing,
+and periodic boundary conditions.
+
+
+Prerequisites
+-------------
+
+This program supposes you are working on a Linux system, with the gfortran fortran
+compiler installed. Visualization is done in R (or RStudio).
+
+
+Installation and compilation
+----------------------------
+
+First, unpack the file swe1D.tgz with the command 
+		
+		tar -zxvf swe1D.tgz
+
+Go to the directory with
+		
+		cd swe1D
+
+Then compile the program with the command
+		
+		make swe1D
+		
+If you have a nonstandard linux installation, make the necessary modifications in the file Makefile.
+
+
+Use
+---
+
+First, set the parameters values the file fort.4.
+Then, run the program with the command "./swe1D".
+Finally, animate the results in R(Studio) with the commands
+
+	source('show.R')
+	showResults('output.dat',freq=10)
+
+The fish indicates the constant advection.
+
+To plot a single timestep (e.g. the 20th), use
+	showResults('output.dat',timestep=20)
+	
+
+Changing the program
+--------------------
+
+If you make modifications to the parameter values in the file fort.4, you don't have to recompile the program.
+If you make changes to any of the Fortran  (*.F90) files, you should recompile with the command "make swe1D".
+
