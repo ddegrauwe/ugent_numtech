@@ -62,61 +62,52 @@ The goal is to write a Fortran program that calculates a numerical solution for 
 with initial condition $\psi_{t=0}=1$. The exact solution is given by $\psi(t)=\exp(i\kappa t)$.
 %
 \par
-For this exercise, it is assumed that you work on the Linux server of UGENT (\texttt{helios}), and that you connect to it through the Athena platform.
-%
-\section{Different machines}
+For this exercise, it is assumed that you work on the HPC (High-Performance Computer) infrastructure of UGENT, and that you connect to it through the \texttt{login.hpc.ugent.be} web page.
 %
 \par
-During this exercise, three different machines should be distinguished:
-%
-\begin{itemize}
-	\item the machine in front of you: PC in the PC-room, a laptop, a tablet or smartphone \ldots
-	\item Athena, which in fact is a Windows machine that can be accessed via internet.
-	\item \texttt{helios}, which is a Linux server of UGENT.
-\end{itemize}
-%
-Note that Athena and \texttt{helios} are \emph{remote} machines: they may not even be in the same building as where you are.
-%
-\par
-The reason why several machines are needed is that each operating system has its strong and weak points. While a graphical user-interface like Windows is most convenient for user interaction and visualization, Linux is more convenient for calculations and repetitive tasks. The intermediate layer of Athena is used to ensure that everyone works in the same environment.
-%
-\subsection{Athena}
-%
-\par
-To log in on Athena, open a web browser, and go to \texttt{https://athena.ugent.be}. Log in with your UGENT user and password. You should then see a page like this:
+The first thing to do (preferably before the first practical session) is therefore to ask for an HPC account on \texttt{https://www.ugent.be/hpc/en/access/faq/access}. Afterwards, you should be able to login via \texttt{login.hpc.ugent.be}. This should give you an interface like
 %
 \begin{center}
-	\includegraphics[scale=.45]{athena2.png}
-\end{center}
-%
-\subsection{helios}
-%
-\par
-First, an account should be created on \texttt{helios}. To do so, go to\\ \verb+https://helpdesk.ugent.be/account/en/helios.php+, and follow the guidelines there.
-%
-\par
-Next, from Athena, open the program PuTTY. It should give you a window like this:
-%
-\begin{center}
-	\includegraphics[scale=.45]{putty1.png}
+	\includegraphics{login_hpc}
 \end{center}
 %
 \par
-Set the Host Name to \emph{helios.ugent.be}. Optionally, give the session a name and save it for future use. Then hit the ``Open'' button. This will open a window where you are asked to enter your helios account and password.
-%
-\begin{center}
-	\includegraphics[scale=.45]{putty2.png}
-\end{center}
+Different tools from this web platform will be used from this web platform: the ``Files'' application to access files on the HPC, the ``Cluster Desktop'' application to enter a Linux desktop, and the ``Jupyter Notebook'' application for visualization of results.
 %
 \par
-After entering account name and password (note the password doesn't appear when typed, not even as ******), the following screen appears
+What is a bit peculiar about using HPC infrastructure is that everything you do is done inside a `job'. This means that you first have to submit/launch your job, and once it starts you can begin your work.
 %
-\begin{center}
-	\includegraphics[scale=.45]{putty3.png}
-\end{center}
+\section{Accessing files}
 %
 \par
-Congratulations, you are now connected to a Linux machine. What you see is called the \emph{command line}. In Linux, almost everything you do is done by typing commands on the command line. For instance, try to execute the following command:
+Under the ``Files'' application, hitting ``Home Directory'' should give you a graphical interface to your personal space on the HPC infrastructure. It lists all existing files and allows to download them, to upload new files, to view and edit (text) files, etc. However, in this practicum we'll work inside a Linux desktop to create/view/edit files. The Files application is mainly useful to exchange files with your local machine.
+%
+\section{Linux desktop}
+%
+\par
+Launching a desktop job is done under ``Interactive Apps''-``Cluster Desktop''. Choose an appropriate time for your job (typically a few hours), and set the clustername to ``slaking''. Then hit the ``Launch'' button at the bottom. After a few minutes, you should see something like the following under ``My Interactive Sessions'':
+%
+\begin{center}
+	\includegraphics{launch_desktop}
+\end{center}
+%
+This means the job has started, and you can begin to work in it. Hit the ``Launch Cluster Desktop'' button to enter the desktop environment, which should look as follows:
+%
+\begin{center}
+	\includegraphics{desktop}
+	\begin{tikzpicture}
+		\useasboundingbox (0,0);
+		\draw [red, line width=2pt] (-12,6.85) circle [x radius=1.5,y radius=0.5];
+		\draw [blue, line width=2pt] (-12,6.85) circle [x radius=1.5,y radius=0.5];
+	\end{tikzpicture}
+\end{center}
+%
+The most important applications in this desktop environment are the Linux terminal (red circle) and the File browser (blue circle).
+%
+\subsection{The Linux terminal}
+%
+\par
+Opening a Linux terminal gives you access to what is called the \emph{command line}. In Linux, almost everything you do is done by typing commands on the command line. For instance, try to execute the following command:
 %
 \begin{verbatim}
    $   date
