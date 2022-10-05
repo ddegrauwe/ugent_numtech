@@ -10,10 +10,10 @@ SUBROUTINE SETUP
   PI=ACOS(-1.0)
 
   ! discretization properties
-  NX = 200
-  DX = 0.5
+  NX = 100
+  DX = 1.0
   
-  NT = 200
+  NT = 100
   DT = 1.0
   
   ! system parameters
