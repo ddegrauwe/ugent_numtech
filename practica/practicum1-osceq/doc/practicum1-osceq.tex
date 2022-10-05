@@ -62,20 +62,17 @@ The goal is to write a Fortran program that calculates a numerical solution for 
 with initial condition $\psi_{t=0}=1$. The exact solution is given by $\psi(t)=\exp(i\kappa t)$.
 %
 \par
-For this exercise, it is assumed that you work on the HPC (High-Performance Computer) infrastructure of UGENT, and that you connect to it through the \texttt{login.hpc.ugent.be} web page.
-%
-\par
-The first thing to do (preferably before the first practical session) is therefore to ask for an HPC account on \texttt{https://www.ugent.be/hpc/en/access/faq/access}. Afterwards, you should be able to login via \texttt{login.hpc.ugent.be}. This should give you an interface like
+For this exercise, it is assumed that you work on the HPC (High-Performance Computer) infrastructure of UGENT. The first thing to do (preferably \underline{before} the first practical session) is therefore to ask for an HPC account on \texttt{https://www.ugent.be/hpc/en/access/faq/access}. Afterwards, you should be able to login via \texttt{https://login.hpc.ugent.be}. This should give you an interface like
 %
 \begin{center}
-	\includegraphics{login_hpc}
+	\includegraphics[scale=.4]{login_hpc}
 \end{center}
 %
 \par
-Different tools from this web platform will be used from this web platform: the ``Files'' application to access files on the HPC, the ``Cluster Desktop'' application to enter a Linux desktop, and the ``Jupyter Notebook'' application for visualization of results.
+Different tools from this web platform will be used: the ``Files'' application to access files on the HPC, the ``Cluster Desktop'' application to enter a Linux desktop, and the ``Jupyter Notebook'' application for visualization of results.
 %
 \par
-What is a bit peculiar about using HPC infrastructure is that everything you do is done inside a `job'. This means that you first have to submit/launch your job, and once it starts you can begin your work.
+What is a bit peculiar about using HPC infrastructure is that nearly everything you do is done inside a `job'. This means that you first have to submit/launch your job, and once it starts you can begin your work.
 %
 \section{Accessing files}
 %
@@ -88,21 +85,26 @@ Under the ``Files'' application, hitting ``Home Directory'' should give you a gr
 Launching a desktop job is done under ``Interactive Apps''-``Cluster Desktop''. Choose an appropriate time for your job (typically a few hours), and set the clustername to ``slaking''. Then hit the ``Launch'' button at the bottom. After a few minutes, you should see something like the following under ``My Interactive Sessions'':
 %
 \begin{center}
-	\includegraphics{launch_desktop}
+	\includegraphics[scale=.4]{launch_desktop}
 \end{center}
 %
 This means the job has started, and you can begin to work in it. Hit the ``Launch Cluster Desktop'' button to enter the desktop environment, which should look as follows:
 %
 \begin{center}
-	\includegraphics{desktop}
+	\includegraphics[scale=.4]{desktop}
 	\begin{tikzpicture}
 		\useasboundingbox (0,0);
-		\draw [red, line width=2pt] (-12,6.85) circle [x radius=1.5,y radius=0.5];
-		\draw [blue, line width=2pt] (-12,6.85) circle [x radius=1.5,y radius=0.5];
+		\draw [red, line width=2pt] (-5.5,.25) circle [radius=0.4];
+		\draw [blue, line width=2pt] (-5,.25) circle [radius=0.4];
 	\end{tikzpicture}
 \end{center}
 %
 The most important applications in this desktop environment are the Linux terminal (red circle) and the File browser (blue circle).
+%
+\subsection{The file browser}
+%
+\par
+This is just a convenient tool like Windows Explorer to browse and open files.
 %
 \subsection{The Linux terminal}
 %
@@ -119,50 +121,27 @@ where the \texttt{\$} denotes that the command should be typed in the command li
 Note: Linux is case-sensitive. This means that typing \verb+DATE+ or \verb+Date+ will not work.
 %
 \par
-The Linux commands that are needed for this lesson will be explained during the course of the exercise. Appendix~\ref{sec:linux_commands} gives an overview of some of the most common Linux commands. At this point, you get three tricks for free:
+The Linux commands that are needed for this lesson will be explained during the course of the exercise. Appendix~\ref{sec:linux_commands} gives an overview of some of the most common Linux commands. At this point, you get following tricks for free:
 %
 \begin{itemize}
 	\item Linux stores a history of commands you entered. To repeat a previous command, hit the \texttt{UP} arrow.
-	\item Hitting the \texttt{TAB} key autocompletes. For example, if you type \texttt{dat}, and then hit \texttt{TAB}, it will autocomplete to \texttt{date}. This also works for files and directories. If multiple options exist for autocompletion, you can hit \texttt{TAB} twice, to see the options. For instance, if you type \texttt{da}, and then hit \texttt{TAB} twice, you should see that \texttt{date} and \texttt{dash} are possible commands.
-	\item You can copy/paste text in the PuTTY window by selecting the text with the left mouse button, and pasting it with the right mouse button.
+	\item Hitting the \texttt{TAB} key autocompletes. For example, if you type \texttt{dat}, and then hit \texttt{TAB}, it will autocomplete to \texttt{date}. This also works for files and directories. If multiple options exist for autocompletion, you can hit \texttt{TAB} twice, to see the options. For instance, if you type \texttt{cat}, and then hit \texttt{TAB} twice, you should see that \texttt{cat}, \texttt{catman} and \texttt{catchsegv} are possible commands.
 \end{itemize}
 %
 \par
-When working on a Linux command line, it is important to note that one works in a specific directory. Normally, this directory is visible before the \texttt{\$} symbol. You can also use the \verb+pwd+ command to print the working directory.
-%
-\subsection{Data transfer between Athena and \texttt{helios}}
-%
-\par
-As explained before, Athena and \texttt{helios} are actually two different machines. Luckily, it is possible to mount the same drive (the so-called ``H-drive'') on the two systems. This makes transfering data between both machines much easier.
-%
-\par
-To mount the H-drive on \texttt{helios}, execute the following command:
-%
-\begin{verbatim}
-   $   newns  -i
-\end{verbatim}
-%
-After providing your password, you can access the H-drive with
-%
-\begin{verbatim}
-   $   cd /files/${USER}/home/
-\end{verbatim}
-%
-Note: these two commands should be executed everytime you log in on \texttt{helios}.
+When working on a Linux command line, it is important to note that one works in a specific directory. Normally, this directory is visible before the \texttt{\$} symbol. $\sim$ denotes the home directory. You can also use the \verb+pwd+ command to print the working directory.
 %
 \subsection{Creating and modifying a text file}
 %
 \par
-Creating and modifying text files is very important for the rest of this exercise (and the remainder of the course). Make sure to go through this section meticulously.
-%
-\subsubsection{File creation on \texttt{helios}}
+Creating and modifying text files is very important for the rest of this exercise (and the remainder of the course).
 %
 \par
-To create a file on the H-drive, execute the following commands:
+On the command line, execute the following commands:
 %
 \begin{verbatim}
-   $   mkdir /files/${USER}/home/numtech
-   $   cd /files/${USER}/home/numtech
+   $   mkdir ${HOME}/numtech
+   $   cd ${HOME}/numtech
    $   touch test.txt
 \end{verbatim}
 %
@@ -174,53 +153,42 @@ Some explanation:
 	\item \texttt{touch} creates a (empty) file
 \end{itemize}
 %
-To check if the file was indeed created, run the following command:
+To check if the file was indeed created, you can open the file browser and navigate to the newly created numtech directory, where the test.txt file should be visible. You can also check the contents of a directory from the command line with
 %
 \begin{verbatim}
    $   ls
 \end{verbatim}
 %
-which gives a listing of the files in the current directory.
-%
-\subsubsection{Modification on Athena\label{sec:txtmodif}}
+To modify a (text) file, select it in the file browser and double-click or hit Enter. This should launch a text editor (Geany) where you can modify the file as desired. Make sure to save a file after making modifications!
 %
 \par
-Now, we will modify this file using a text editor on Athena. 
-%
-\begin{enumerate}
-	\item open the {Notepad++} editor in Athena
-	\item inside {Notepad++}, open the file \verb+H:\numtech\test.txt+ (which is still empty for now).
-	\item put some text in the file (e.g. ``Hello World!'').
-	\item \textbf{Important}: make sure to set the end-of-line convention correctly for this file:\\ Edit$\rightarrow$EOL Conversion$\rightarrow$Unix/OSX Format. It's best to do this always for files you will use in Linux.
-	\item Save the file
-\end{enumerate}
-%
-\subsubsection{Review on \texttt{helios}}
-%
-\par
-To check if everything went well, run the following command on \texttt{helios}:
+Next, you can check the contents of a file with the following command in the command line:
 %
 \begin{verbatim}
    $   cat test.txt
 \end{verbatim}
 %
-which should show you the text you entered in {Notepad++}.
+which should show you the text you entered in Geany. Finally, remove the test file with 
+%
+\begin{verbatim}
+   $   rm test.txt
+\end{verbatim}
 %
 \section{My first Fortran program}
 %
 \subsection{The Fortran code}
 %
 \par
-First, create a directory for this program on the H-drive, and create an empty file \texttt{osceq.F90}:
+First, create a directory for this program, and create an empty file \texttt{osceq.F90}:
 %
 \begin{verbatim}
-   $   mkdir /files/${USER}/home/numtech/osceq
-   $   cd /files/${USER}/home/numtech/osceq/
+   $   mkdir ${HOME}/numtech/osceq
+   $   cd ${HOME}/numtech/osceq/
    $   touch osceq.F90
 \end{verbatim}
 %
 \par
-Open this file in {Notepad++}, and put the following Fortran code inside:
+Open this file in Geany, and put the following Fortran code inside:
 %
 {\vspace{10pt}\hrule\small\vspace*{-2pt}\begin{verbatim}
 	  PROGRAM OSCEQ
@@ -246,7 +214,7 @@ Some explanations:
 Before being able to execute Fortran code, it must be \emph{compiled}. This is the process of transforming a code that's readable to humans (Fortran) into a code that's readable to computers (executable files). For this, we use a \emph{compiler}.
 %
 \par
-Compilation is quite easy (as long as your code doesn't contain any mistakes). On \texttt{helios}, we will use the \texttt{gfortran} compiler. To convert the Fortran code into an executable program, type the following in the command line:
+Compilation is quite easy (as long as your code doesn't contain any mistakes). We will use the \texttt{gfortran} compiler. To convert the Fortran code into an executable program, type the following in the command line:
 %
 \begin{verbatim}
 	  $   gfortran osceq.F90 -o osceq
@@ -284,7 +252,7 @@ You may have noticed that recompiling and running often go together. It is there
 Where the \verb+chmod+ command marks the file as an executable script.
 %
 \par
-Next, open this file in {Notepad++}, and put the following text in it:
+Next, open this file in Geany, and put the following text in it:
 %
 {\vspace{10pt}\hrule\small\vspace*{-2pt}\begin{verbatim}
     # Script to compile and run the oscillation equation program
@@ -310,8 +278,6 @@ Some explanations:
 	\item The \verb+echo+ command prints text to the screen.
 \end{itemize}
 %
-Also, remember to set the end-of-line convention to Unix/OSX, as explained under~\ref{sec:txtmodif}.
-%
 \par
 Running the script is done with
 %
@@ -330,10 +296,10 @@ Let us now introduce some variables in our Fortran program. However, before maki
    $   cd osceq/
 \end{verbatim}
 %
-With the first command, we move one directory up (so to \verb+/files/${USER}/home/numtech/+). The \verb+cp+ command takes a copy; to copy directories, the additional argument \verb+-r+ is required.
+With the first command, we move one directory up (so to \verb+${HOME}/numtech/+). The \verb+cp+ command takes a copy; to copy directories, the additional argument \verb+-r+ is required.
 %
 \par
-Now we have stored a backup, we can proceed with modifying the source code. In {Notepad++}, change the file \texttt{osceq.F90} as follows:
+Now we have stored a backup, we can proceed with modifying the source code. In Geany, change the file \texttt{osceq.F90} as follows:
 %
 {\vspace{10pt}\hrule\small\vspace*{-2pt}\begin{verbatim}
 	  PROGRAM OSCEQ
@@ -753,61 +719,61 @@ Remarks and new concepts:
 	\item for the compilation, it's important to put the Fortran files containing modules (in our case\\ \verb+constants.F90+) \emph{before} the Fortran files using these modules.
 \end{itemize}
 %
-\section{Visualizing the output with R}
+\section{Visualizing the output in a Jupyter Notebook}
 %
 \par
-Fortran is a programming language that's intended to perform calculations. Visualizing results is commonly done with other programs, such as Matlab, R, gnuplot, python, etc. All of these programs are capable of reading numerical data from a file (like the one created by our program). For this course, we will use RStudio (a graphical interface to R) to postprocess (visualize and inspect) the results of our calculations. RStudio is available on Athena, and can easily be installed under Windows, Linux or OSX.
+Fortran is a programming language that's intended to perform calculations. Visualizing results is commonly done with other programs, such as Matlab, R, gnuplot, python, etc. All of these programs are capable of reading numerical data from a file (like the one created by our program). For this course, we will use a Jupyter Notebook to postprocess (visualize and inspect) the results of our calculations.
 %
-\par
-It may seem a bit awkward that we perform the calculations on a different machine and with a different programming language than what we use for the postprocessing. In fact, this situation is quite common in NWP and climate research, where the calculations are done on a dedicated High Performance Computing (HPC) Linux-machine. Such a machine is intended for heavy calculations, but not for interactive or graphical work. So the output is copied to another server or to a PC, where the scientist can postprocess the data.
-%
-\par
-To visualize the results of the oscillation equation program:
+\subsection{Launching a Jupyter Notebook}
 %
 \begin{enumerate}
-	\item start RStudio from Athena
-	\item set the working directory to the H-drive by hitting Ctrl-Shift-h. Choose the directory where you run your Fortran code for the oscillation equation.
-	\item read the data from the file \verb+output.dat+ with
-		%
-		\begin{verbatim}
-			  >   y=read.table('output.dat',header=TRUE)
-		\end{verbatim}
-	\item plot the exact solution with
-		\begin{verbatim}
-			  >   plot(y$time,y$exact,ylim=c(-3,3),type='b',pch=1,col=1)
-		\end{verbatim}
-	\item add the numerical solution to the plot with
-		\begin{verbatim}
-			  >   points(y$time,y$numerical,type='b',pch=2,col=2)
-		\end{verbatim}
+	\item Head back to \texttt{https://login.hpc.ugent.be/}
+	\item Under ``Interactive Apps'', select ``Jupyter IPython Notebook''
+	\item Select slaking as the cluster, and select ``\texttt{7.15.0 foss 2020a Python 3.8.2}'' as the IPython version. Then hit the ``Launch'' button.
+	\item After a few minutes, the Jupyter Notebook session should appear in your ``My Interactive Sessions'' panel. Then hit the ``Connect to Jupyter Notebook'' button, which should launch the Jupyter browser in a new tab.
+	\item Browse to the \texttt{numtech/osceq} directory that you've been working in so far, and hit ``New''--``Python 3'' to create a new notebook.
+	\item Rename the notebook from the default `Untitled' to something more appropriate, e.g. `osceq\_notebook'.
 \end{enumerate}
 %
+\subsection{Working in a Jupyter Notebook}
+%
 \par
-Instead of typing all these commands, it's more convenient to put them in a text file, and have RStudio execute this file. So, create a file \verb+show_results.R+ containing the following:
+A notebook is organized in `cells', which are pieces of python code that can be executed by hitting Shift+Enter. After modifying the content of a cell, make sure to rerun it.
 %
-{\vspace{15pt}\hrule\small\vspace*{-2pt}\begin{verbatim}
-	  # R code to show results of the oscillation equation
-	  # the results are supposed to be stored in 3 columns 
-	  # (time-exact-numerical) in a file 'output.dat'
-	  
-	  # open window
-	  windows(20,10)
-	  
-	  # read the file
-	  y=read.table('output.dat',header=TRUE)
-	  
-	  # plot exact and numerical result
-	  plot(y$time,y$exact,ylim=c(-3,3),type='b',pch=1,col=1,xlab='time',ylab='solution')
-	  points(y$time,y$numerical,type='b',pch=2,col=2)
-
-	  # add legend
-	  legend("topleft",c("exact","numerical"),pch=1:2,col=1:2,lty=1)
-\end{verbatim}\hrule\vspace{5pt}}
-%
-This file can then be executed in RStudio by typing
+\par
+In the first cell, we'll load some necessary libraries:
 %
 \begin{verbatim}
-	  >   source('show_results.R')
+	# load some libraries
+    %matplotlib inline
+    import numpy as np
+    import matplotlib.pyplot as plt
+\end{verbatim}
+%
+\par
+In the following cell, we'll load the data from the \texttt{output.dat} file
+%
+\begin{verbatim}
+    # read the output data
+    filename='output.dat'
+    data=np.loadtxt(filename,skiprows=1)
+	# select columns
+    t=data[:,0]
+    y_exact=data[:,1]
+    y_numerical=data[:,2]
+\end{verbatim}
+%
+\par
+Next, we can visualize the results in the next cell with
+%
+\begin{verbatim}
+    # open a figure
+    fig, ax = plt.subplots(figsize=(12,8))
+	# plot exact and numerical result
+    plt.plot(t,y_exact,label='exact')
+    plt.plot(t,y_numerical,label='numerical')
+	# add legend
+    plt.legend();
 \end{verbatim}
 %
 \section{Exercises}
@@ -893,72 +859,6 @@ This file can then be executed in RStudio by typing
 		\texttt{diff}		& show difference between two (text) files	\\
 										& \parbox[b]{.1\textwidth}{e.g.}\texttt{diff test.txt test2.txt}	\\[5pt]
 \end{tabular}
-%
-\section{More advanced interaction with Linux machines}
-%
-\subsection{Connecting with a graphical interface enabled: Xming\label{app:GUI}}
-%
-\par
-Although the command-line is the most important way to interact with a Linux system, it is sometimes desirable to have a graphical interface (e.g. to show figures). For this, it is necessary to start the program Xming \emph{before} starting PuTTY. Xming is installed in the PC rooms, but not on Athena. It can easily be installed on your own laptop though.
-%
-\par
-After starting Xming by double-clicking it, start PuTTY as before, but make sure to enable ``X11 forwarding'' under Connection$\rightarrow$SSH$\rightarrow$X11.
-%
-\par
-To test whether the graphics work, try to execute the program \verb+xclock+ from the command line. A small clock window should appear.
-%
-\par
-Note: this does not work with Athena's PuTTY.
-%
-\subsection{Transferring files: WinSCP\label{app:WinSCP}}
-%
-\par
-Mounting the H-drive as a shared directory between Athena and \texttt{helios} is by far the easiest way to transfer files between both systems. However, the procedure described in this section is more general in the sense that it works for any Windows and any Linux machine.
-%
-\par
-WinSCP is a free program that allows to transfer data between a Windows machine (e.g. your laptop) and a remote server (e.g. \texttt{helios}). It is installed in the PC rooms and on Athena, and it's easy to install on your laptop as well.
-%
-\par
-To connect to \texttt{helios}, set the File protocol to \emph{SCP}, and the Host name to \emph{helios.ugent.be}:
-%
-\begin{center}
-	\includegraphics[scale=.5]{winscp1.png}
-\end{center}
-%
-Hit the ``Login'' button, enter your account name and password, and you'll get something like this:
-%
-\begin{center}
-	\includegraphics[scale=.5]{winscp2.png}%
-	\begin{tikzpicture}
-		\useasboundingbox (0,0);
-		\draw [red, line width=2pt] (-12,6.85) circle [x radius=1.5,y radius=0.5];
-	\end{tikzpicture}
-\end{center}
-%
-Next, select the H-drive in the circled area of the previous screenshot, to end up with
-%
-\begin{center}
-	\includegraphics[scale=.5]{winscp3.png}
-\end{center}
-%
-\par
-In this window, the left panel represents your local file system (i.e. your laptop, the PC of the PC room, or the H-drive when using Athena), while the right panel represents the remote system (i.e. \texttt{helios}). Transferring files can be done by dragging between the two panels.
-%
-\section{Overview of programs}
-%
-\begin{center}
-	\def\arraystretch{1.3}
-	\begin{tabular}{llp{.5\textwidth}}
-		Program	&	OS	&	Description	\\
-	\hline
-		PuTTY			&	Windows/OSX	&	make connection from Windows machine to Linux machine	\\
-		Xming			&	Windows	&	enable graphical connection between Windows and Linux machine. To be used in combination with PuTTY.\\
-		Notepad++	&	Windows/OSX	&	text editor	\\
-		WinSCP		&	Windows		&	transfer files between two machines	\\
-		RStudio		&	Windows/OSX/Linux	&	graphical interface to R; used for postprocessing and visualization	\\
-		gfortran	&	OSX/Linux	&	Fortran compiler
-	\end{tabular}
-\end{center}
 %
 \end{document}
 %
