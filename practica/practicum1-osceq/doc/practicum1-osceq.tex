@@ -729,10 +729,10 @@ Fortran is a programming language that's intended to perform calculations. Visua
 \begin{enumerate}
 	\item Head back to \texttt{https://login.hpc.ugent.be/}
 	\item Under ``Interactive Apps'', select ``Jupyter IPython Notebook''
-	\item Select slaking as the cluster, and select ``\texttt{7.15.0 foss 2020a Python 3.8.2}'' as the IPython version. Then hit the ``Launch'' button.
+	\item Select slaking as the cluster, and select {\bfseries ``\texttt{7.15.0 foss 2020a Python 3.8.2}''} as the IPython version. Then hit the ``Launch'' button.
 	\item After a few minutes, the Jupyter Notebook session should appear in your ``My Interactive Sessions'' panel. Then hit the ``Connect to Jupyter Notebook'' button, which should launch the Jupyter browser in a new tab.
 	\item Browse to the \texttt{numtech/osceq} directory that you've been working in so far, and hit ``New''--``Python 3'' to create a new notebook.
-	\item Rename the notebook from the default `Untitled' to something more appropriate, e.g. `osceq\_notebook'.
+	\item Rename the notebook from the default `Untitled' to something more appropriate, e.g. `osceq'.
 \end{enumerate}
 %
 \subsection{Working in a Jupyter Notebook}
@@ -744,7 +744,7 @@ A notebook is organized in `cells', which are pieces of python code that can be 
 In the first cell, we'll load some necessary libraries:
 %
 \begin{verbatim}
-	# load some libraries
+    # load some libraries
     %matplotlib inline
     import numpy as np
     import matplotlib.pyplot as plt
@@ -757,7 +757,7 @@ In the following cell, we'll load the data from the \texttt{output.dat} file
     # read the output data
     filename='output.dat'
     data=np.loadtxt(filename,skiprows=1)
-	# select columns
+    # select columns
     t=data[:,0]
     y_exact=data[:,1]
     y_numerical=data[:,2]
@@ -769,10 +769,10 @@ Next, we can visualize the results in the next cell with
 \begin{verbatim}
     # open a figure
     fig, ax = plt.subplots(figsize=(12,8))
-	# plot exact and numerical result
+    # plot exact and numerical result
     plt.plot(t,y_exact,label='exact')
     plt.plot(t,y_numerical,label='numerical')
-	# add legend
+    # add legend
     plt.legend();
 \end{verbatim}
 %
