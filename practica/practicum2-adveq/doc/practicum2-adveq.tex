@@ -45,7 +45,7 @@ The exact solution is given by
 \end{equation}
 %
 \par
-For this exercise, runs will be done on \verb+helios+, while visualization will be done on Athena with RStudio. Check the practicum on Linux and Fortran if something is unclear about this.
+For this exercise, runs will be done on the HPC of UGent, while visualization will be done in a Jupyter notebook. Check the practicum on Linux and Fortran if something is unclear about this.
 %
 \par\vspace*{3ex}
 \textbf{Preparations}:
@@ -61,7 +61,7 @@ For this exercise, runs will be done on \verb+helios+, while visualization will 
 	\item Copy the Jupyter notebook for visualization with
 		%
 		\begin{verbatim}
-			  $   cp /user/gent/407/vsc40744/ugent/numtech/practica/practicum2-adveq/adveq.ipynb 
+			  $   cp /user/gent/407/vsc40744/ugent/numtech/practica/practicum2-adveq/adveq.ipynb .
 		\end{verbatim}
 		%
 \end{enumerate}
@@ -87,11 +87,11 @@ where $\mu=\frac{c\Delta t}{\Delta x}$ is the Courant-number.
 \textbf{Exercises}:
 %
 \begin{enumerate}
-	\item Copy the directory containing the upstream scheme model to your H-drive with
+	\item Copy the directory containing the upstream scheme model to your own directory
 		%
 		\begin{verbatim}
-			  $   cd /files/${USER}/home/numtech/adveq/
-			  $   cp -r /users/d/ddgrauwe/numtech/2021-2022/practica/adveq/upstream/ .
+			  $   cd ${HOME}/numtech/adveq/
+			  $   cp -r /user/gent/407/vsc40744/ugent/numtech/practica/practicum2-adveq/src/upstream/ .
 		\end{verbatim}
 		%
 	\item Go to this directory with
@@ -107,26 +107,15 @@ where $\mu=\frac{c\Delta t}{\Delta x}$ is the Courant-number.
 		\end{verbatim}
 		%
 		%
-	\item Open RStudio on Athena. Set the working directory and load the visualization script with
+	\item Launch a Jupyter notebook from \texttt{https://login/hpc.ugent.be}. Go to the directory \texttt{numtech/adveq/} and open the file \texttt{adveq.ipynb}.
 		%
-		\begin{verbatim}
-			  >   setwd('H:/numtech/adveq/')
-			  >   source('show.R')
-		\end{verbatim}
+		\par
+		The first two cells are just for loading packages and defining a plotting routine; execute them with \texttt{shirt+enter}
 		%
-		Animate the results with
+		\par
+		The next cell allows to animate the results of the upstream scheme. Execute it with \texttt{shift+enter} (this takes some time!).
 		%
-		\begin{verbatim}
-			  >   animateResults('upstream/output.dat')
-		\end{verbatim}
-		%
-		Plot results on a single timestep with
-		%
-		\begin{verbatim}
-			  >   plotResults('upstream/output.dat',20)
-		\end{verbatim}
-		%
-	\item The stability condition for the upstream scheme is $0\leq\mu\leq1$. Find 3 ways to make the model unstable by changing parameters in \verb+setup.F90+ (open the file in Nodepad++). Rerun after each modification.
+	\item The stability condition for the upstream scheme is $0\leq\mu\leq1$. Find 3 ways to make the model unstable by changing parameters in \verb+setup.F90+ (open the file in Geany). Rerun after each modification.
 		%
 	\item Check the wavelength-dependency of the damping when $\mu=0.5$. This is done by modifying the wavenumber \verb+KX+ in the file \verb+exact_solution.F90+.
 		\par
@@ -158,7 +147,7 @@ or
 	\item Start from a copy of the upstream scheme:
 		%
 		\begin{verbatim}
-			  $   cd /files/${USER}/home/numtech/adveq/
+			  $   cd ${HOME}/numtech/adveq/
 			  $   cp -r upstream/ forward_centered
 			  $   cd forward_centered
 		\end{verbatim}
@@ -219,7 +208,7 @@ or
 	\item Start from a copy of the forward-centered scheme:
 		%
 		\begin{verbatim}
-			  $   cd /files/${USER}/home/numtech/adveq
+			  $   cd ${HOME}/numtech/adveq
 			  $   cp -r forward_centered/ leapfrog/
 			  $   cd leapfrog
 		\end{verbatim}
@@ -328,8 +317,8 @@ The Matsuno scheme is given by
 	\item Copy the spectral model with forward timestepping to your H-drive with
 		%
 		\begin{verbatim}
-			  $   cd /files/${USER}/home/numtech/adveq/ 
-			  $   cp -r /users/d/ddgrauwe/numtech/2021-2022/practica/adveq/forward_spectral/ .
+			  $   cd ${HOME}/numtech/adveq/ 
+			  $   cp -r /user/gent/407/vsc40744/ugent/numtech/practica/practicum2-adveq/src/forward_spectral/ .
 		\end{verbatim}
 		%
 		The scheme is formulated in spectral space like
@@ -348,11 +337,11 @@ The Matsuno scheme is given by
 	\item Go to this directory, compile and run with
 		%
 		\begin{verbatim}
-			  $   cd /files/${USER}/home/numtech/adveq/forward_spectral/
+			  $   cd ${HOME}/numtech/adveq/forward_spectral/
 			  $   ./run.sh
 		\end{verbatim}
 		%
-	\item Review the results in RStudio like for previous exercises.
+	\item Review the results in Jupyter like for previous exercises.
 		%
 		\par
 Compare these results with those of the upstream scheme. Both models use a forward time scheme. How is it possible that changing to a more accurate space discretization (spectral is more accurate than 1st order decentered) gives worse results?
