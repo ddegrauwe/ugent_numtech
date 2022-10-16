@@ -61,7 +61,7 @@ For this exercise, runs will be done on the HPC of UGent, while visualization wi
 	\item Copy the Jupyter notebook for visualization with
 		%
 		\begin{verbatim}
-			  $   cp /user/gent/407/vsc40744/ugent/numtech/practica/practicum2-adveq/adveq.ipynb .
+			  $   cp /user/gent/407/vsc40744/ugent/numtech/practica/practicum2-adveq/src/adveq.ipynb .
 		\end{verbatim}
 		%
 \end{enumerate}
@@ -107,10 +107,10 @@ where $\mu=\frac{c\Delta t}{\Delta x}$ is the Courant-number.
 		\end{verbatim}
 		%
 		%
-	\item Launch a Jupyter notebook from \texttt{https://login/hpc.ugent.be}. Go to the directory \texttt{numtech/adveq/} and open the file \texttt{adveq.ipynb}.
+	\item Launch a Jupyter notebook from \texttt{https://login.hpc.ugent.be}. Go to the directory \texttt{numtech/adveq/} and open the file \texttt{adveq.ipynb}.
 		%
 		\par
-		The first two cells are just for loading packages and defining a plotting routine; execute them with \texttt{shirt+enter}
+		The first two cells are just for loading packages and defining a plotting routine; execute them with \texttt{shift+enter}
 		%
 		\par
 		The next cell allows to animate the results of the upstream scheme. Execute it with \texttt{shift+enter} (this takes some time!).
@@ -318,7 +318,8 @@ The Matsuno scheme is given by
 		%
 		\begin{verbatim}
 			  $   cd ${HOME}/numtech/adveq/ 
-			  $   cp -r /user/gent/407/vsc40744/ugent/numtech/practica/practicum2-adveq/src/forward_spectral/ .
+			  $   cp -r /user/gent/407/vsc40744/ugent/numtech/practica/ \
+			         practicum2-adveq/src/forward_spectral/ .
 		\end{verbatim}
 		%
 		The scheme is formulated in spectral space like

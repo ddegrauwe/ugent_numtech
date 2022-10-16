@@ -9,7 +9,7 @@ ltxf() {
 	pdflatex --interaction=nonstopmode tmp.tex
 	mv tmp.pdf ${ff}.pdf
 	echo -e "\nCreated ${ff}.pdf\n"
-	rm tmp.aux tmp.log tmp.nav tmp.out tmp.snm tmp.toc tmp.tex
+	rm -f tmp.aux tmp.log tmp.nav tmp.out tmp.snm tmp.toc tmp.tex
 }
 
 # current directory
@@ -19,7 +19,7 @@ currdir=${PWD}
 cd slides
 ffs="nt0-welcome nt2-time nt4-spectral nt6-sisl nt-projects nt1-stability nt3-space nt5-extras nt7-parallel"
 ffs="nt4-spectral"
-#ffs=""
+ffs=""
 
 for ff in ${ffs}; do
 	ltxf ${ff}
@@ -37,11 +37,12 @@ done
 cd ${currdir}
 cd practica/practicum2-adveq/doc
 ffs="practicum2-adveq"
-ffs=""
+#ffs=""
 for ff in ${ffs}; do
 	ltxf ${ff}
 done
 
+cd ${currdir}
 cd practica/practicum2-adveq/solutions/adveq
 ffs="practicum2-adveq-solutions"
 ffs=""
