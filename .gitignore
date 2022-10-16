@@ -5,3 +5,4 @@ output.dat
 adveq
 .ipynb_checkpoints
 osceq
+libfft.a
