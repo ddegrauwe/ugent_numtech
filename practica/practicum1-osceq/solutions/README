@@ -1,7 +1,7 @@
 Solutions for Oscillation Equation
 ==================================
 
-See subdirectories for solutions of different schemes. The results for each scheme can be found in the output_*.pdf files.
+See subdirectories for solutions of different schemes. The results for each scheme is visualized in the osceq.ipynb jupyter notebook.
 
 Following behaviour is observed:
 
