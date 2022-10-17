@@ -56,7 +56,9 @@ DO IT=1, NT
   H0 = H1
 
   ! write output
-  CALL WRITE_RESULT(UM+U0,HM+H0)
+  IF ( MODULO(IT,1) == 0 ) THEN
+    CALL WRITE_RESULT(UM+U0,HM+H0)
+  ENDIF
 ENDDO
 
 ! release memory

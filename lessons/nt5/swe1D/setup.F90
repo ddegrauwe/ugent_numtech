@@ -25,7 +25,8 @@ FILE_OUT='output.dat'
 OPEN(UNIT=77,FILE=FILE_OUT)
 
 ! write some constants to the output file
-WRITE(77,*) NX, DX, NT, DT, UM
+WRITE(77,*) NX, DX, NT, DT, 2
+WRITE (77,*) '"U" "H"'
 CLOSE(UNIT=77)
 
 ! show some relevant info

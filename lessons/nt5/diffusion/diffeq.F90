@@ -57,7 +57,8 @@ ENDDO
 
 ! write result
 OPEN(FILE='output.dat',UNIT=7)
-WRITE (7,*) NX,NT,DX,DT
+WRITE (7,*) NX,DX,NT,DT,1
+WRITE (7,*) '"field"'
 WRITE (MYFMT,'(A,I4,A)') '(',NX,'E16.8)'
 WRITE (7,FMT=MYFMT) PHI
 CLOSE(UNIT=7)
