@@ -29,6 +29,7 @@
 %
 \maketitle
 %
+The Fortran codes can be found on Ufora in the file \texttt{solutions.zip}, and on UGent HPC, under \texttt{/user/gent/407/vsc40744/ugent/numtech/practica/practicum2-adveq/solutions}
 \setcounter{section}{1}
 %
 \section{The upstream scheme}
@@ -71,14 +72,6 @@
 \section{Forward scheme, centered spatial finite differences}
 %
 \begin{enumerate}
-	\setcounter{enumi}{2}
-	\item \textbf{Change the spatial discretization into centered finite differences}
-		%
-		\par
-		The modified code can be found on \texttt{helios}, under
-		\par
-		\texttt{/users/d/ddgrauwe/numtech/\input{../../../../slides/thisyear.tex}\unskip/practica/solutions/adveq/forward\_centered/}\vspace{2ex}
-		%
 	\setcounter{enumi}{5}
 	\item \textbf{ How is it possible that going to a more accurate scheme leads to worse results?}
 		%
@@ -105,13 +98,6 @@
 		\begin{equation*}
 			\left|\frac{c\Delta t}{\Delta x}\right|\leq1
 		\end{equation*}\vspace{2ex}
-		%
-	\item[2--6.] \textbf{Implement the leapfrog scheme}
-		%
-		\par
-		The modified code can be found on \texttt{helios}, under
-		\par
-		\texttt{/users/d/ddgrauwe/numtech/\input{../../../../slides/thisyear.tex}\unskip/practica/solutions/adveq/leapfrog\_centered/}\vspace{2ex}
 		%
 	\setcounter{enumi}{6}
 	\item \textbf{Is this scheme accelerating or decelerating?}
@@ -148,11 +134,6 @@
 	\item \textbf{The Heun scheme}
 		%
 		\par
-		The code for this scheme can be found on \texttt{helios}, under
-		\par
-		\texttt{/users/d/ddgrauwe/numtech/\input{../../../../slides/thisyear.tex}\unskip/practica/solutions/adveq/heun\_centered/}
-		%
-		\par
 		Following figures show the results with the Heun scheme for $\mu=0.8$. For long waves, the amplification is very weak (even after 500 timesteps). Shorter waves are more unstable (crash after 58 timesteps).
 		%
 		\begin{center}
@@ -164,10 +145,6 @@
 		\end{center}\vspace{2ex}
 		%
 	\item \textbf{The Matsuno scheme}
-		\par
-		The code for this scheme can be found on \texttt{helios}, under
-		\par
-		\texttt{/users/d/ddgrauwe/numtech/\input{../../../../slides/thisyear.tex}\unskip/practica/solutions/adveq/matsuno\_centered/}
 		%
 		\par
 		Following figures show the results with the Matsuno scheme for $\mu=0.8$. Long and short waves have little damping, while intermediate waves undergo stronger damping.
@@ -233,11 +210,6 @@
 		Because of the compensating errors in the upstream scheme. Taking one error away (damping effect of the spatial discretization) then gives worse results.\vspace{2ex}
 		%
 	\item \textbf{Implement trapezium timestepping}
-		%
-		\par
-		The code for this scheme can be found on \texttt{helios}, under
-		\par
-		\texttt{/users/d/ddgrauwe/numtech/\input{../../../../slides/thisyear.tex}\unskip/practica/solutions/adveq/trapezium\_spectral}
 		%
 		\par
 		This scheme is unconditionally stable. Since the $\arctan$ function gives a real result for any (real) argument, the frequency $\omega$ will be a real number for any wavenumber $k$. This means that the imaginary component of $\omega$ is zero, meaning there is no amplitude error (damping or amplification).

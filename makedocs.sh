@@ -19,7 +19,7 @@ currdir=${PWD}
 cd slides
 ffs="nt0-welcome nt2-time nt4-spectral nt6-sisl nt-projects nt1-stability nt3-space nt5-extras nt7-parallel"
 ffs="nt6-sisl"
-#ffs=""
+ffs=""
 
 for ff in ${ffs}; do
 	ltxf ${ff}
@@ -43,9 +43,9 @@ for ff in ${ffs}; do
 done
 
 cd ${currdir}
-cd practica/practicum2-adveq/solutions/adveq
+cd practica/practicum2-adveq/solutions
 ffs="practicum2-adveq-solutions"
-ffs=""
+#ffs=""
 for ff in ${ffs}; do
 	ltxf ${ff}
 done
