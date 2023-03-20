@@ -1,11 +1,15 @@
 \documentclass[aspectratio=43,9pt]{beamer}
 %
-\usepackage{graphicx,tikz}
+\let\Tiny=\tiny
+%
+\usepackage{tikz}
+\usepackage{enumerate}
 %
 \usetheme{Boadilla}
 %
-\graphicspath{{./figures/assignments/}}
 \input{NTstyle}
+%
+\graphicspath{{./figures/assignments}}
 %
 \title{Student projects}%
 %
@@ -241,18 +245,120 @@
 	\begin{myitemize}{2ex}
 		\item Groups of 2/3 persons
 			%
-		\item Pick a single topic (e.g. SWE-spectral); post your group + choice on Ufora forum or via email.
-			%
-		\item Model codes on \texttt{helios:/users/d/ddgrauwe/numtech/\input{thisyear.tex}\unskip/projects/} and on Ufora.
+		\item Pick a single topic (e.g. SWE-spectral)
 			%
 		\item More detailed background info (papers) on Ufora.
 			%
-		\item Support sessions: \textbf{6 and 13 December}, 16h00; come prepared!
+		\item Support sessions: 18 April, 14h30; come prepared!
 			%
-		\item Report (say 5--10 pp.): deadline Thursday 16 December.
-		\item Presentation for other students: Monday 20 December.
+		\item Report (say 5--10 pp.): deadline Sunday 24 April.
+		\item Presentation for other students: Tuesday 25 April.
 	\end{myitemize}
 	%
+\end{frame}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\begin{frame}
+	
+	\frametitle{Getting started}
+	
+	\begin{myitemize}{3ex}
+		\item Instead of working under Linux (previous years), we'll use a Jupyter notebook. Hopefully this is more student-friendly.
+			%
+		\item However, the actual model is still written in Fortran, but compiling, launching and reviewing results will be done from the Jupyter notebook.
+			%
+		\item To get started, take the following steps:\vspace*{2ex}
+			%
+			\begin{enumerate}
+				\item login on the UGENT HPC infrastructure \texttt{https://login.hpc.ugent.be/}\vspace*{2ex}
+				\item launch a Jupyter IPython Notebook (under Interactive Apps)\vspace*{2ex}
+				\item \textbf{Make sure to use the following settings}:
+					\begin{itemize}
+						\item Set Cluster to `slaking'
+						\item Choose an appropriate value for the Time (you will be kicked off the system after this time)
+						\item Set IPython version to `7.15.0 foss 2020a Python 3.8.2'\vspace*{2ex}
+					\end{itemize}
+				\item Hit the `Launch' button at the bottom\vspace*{2ex}
+				\item After a few minutes, you should be able to connect to your Jupyter job (under My Interactive Sessions)
+			\end{enumerate}
+	\end{myitemize}
+	
+\end{frame}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\begin{frame}
+	%
+	\frametitle{Getting started with the Jupyter notebook}
+	%
+	\begin{itemize}
+		\item The previous steps should bring you to an interface like this\vspace*{2ex}
+			%
+			\begin{center}
+				\includegraphics[width=.6\textwidth]{jupyter_home}
+			\end{center}\vspace*{3ex}
+			%
+		\item This is not yet the actual notebook, but it allows you to easily navigate between files/folders, and to create new notebooks, folders or files.
+	\end{itemize}
+	%	
+\end{frame}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\begin{frame}
+	%
+	\frametitle{Getting started with the Jupyter notebook}
+	%
+	\begin{itemize}
+		\item Since file/folder manipulation is easier in a Linux terminal window, launch a terminal (under New $\rightarrow$ Terminal).\vspace*{3ex}
+		\item Create a new folder and copy the necessary files with\\[2ex]
+			\begin{minipage}{\textwidth}
+				\texttt{mkdir project\_numtech}\\
+				\texttt{cp -r /user/gent/407/vsc40744/ugent/projects/swe1D project\_numtech/}
+			\end{minipage}\\[2ex]
+			(replace \texttt{swe1D} with \texttt{barovort} if needed)\\
+			You can close the terminal window now.\vspace*{3ex}
+		\item Back in the Jupyter launch window, navigate to the folder you just created. When clicking a Fortran file, an editor will open so you can modify it.\vspace*{3ex}
+		\item Finally, click on the file \texttt{swe1D.ipynb}. This will open the notebook where you can interactively launch experiments and review the results.
+	\end{itemize}
+	%	
+\end{frame}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\begin{frame}
+	%
+	\frametitle{Getting started with the Jupyter notebook}
+	%
+	\begin{myitemize}{2ex}
+		\item A notebook is organized in `Cells' containing python code. The code in a cell is evaluated when hitting the Run button or pressing Ctrl-Enter.
+			%
+		\item The SWE notebook contains 4 cells:
+			%
+			\begin{itemize}
+				\item A cell to load the necessary functions from the module in the python file \texttt{swe1D\_fun.py}\vspace*{1ex}
+				\item A cell to launch the model and retrieve the results (more on this later)\vspace*{1ex}
+				\item A cell to animate the water height in time\vspace*{1ex}
+				\item A cell to plot the water height at the last timestep
+			\end{itemize}
+			%
+		\item What actually happens in the second cell is the following:
+			%
+			\begin{enumerate}
+				\item the function \texttt{run\_program} from is called from the \texttt{swe1D\_fun} module.\vspace*{1ex}
+				\item this function in turn launches a Linux script \texttt{run.sh}\vspace*{1ex}
+				\item this script in turn performs the compilation with \texttt{gfortran} and runs the program\vspace*{1ex}
+				\item the program generates an output file \texttt{output.dat}\vspace*{1ex}
+				\item the function \texttt{run\_program} reads the data from this output file and transforms it into numpy arrays, which can be easily plotted.\vspace*{1ex}
+			\end{enumerate}
+			%
+			While this looks quite combersome, *in principle* it shouldn't be modified. Only the Fortran code itself and the postprocessing in Jupyter need modifications.\vspace*{1ex}
+			%
+			\par
+			Should something look strange or unexpected (and it will!) don't hesitate to contact me!
+	\end{myitemize}
+	%	
 \end{frame}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
