@@ -1,0 +1,116 @@
+clear all
+close all
+rand('state',0)
+
+N0=4;
+x0=(0:N0)/N0*2*pi;
+y0=rand(1,N0+1);
+
+N=12;
+x=(0:2*N)/(2*N+1)*2*pi;
+y=spline(x0,[y0(1) y0(2:N0+1) y0(2) y0(1)],x);
+y=y-mean(y);
+
+xx=(0:16*2*N)/(16*2*N+1)*2*pi;
+xxx=(0:16*2*N+1)/(16*2*N+1)*2*pi;
+
+Y=fft(y)/(2*N+1);
+YY=[Y(1:N+1) zeros(1,15*2*N) Y(N+2:end)];
+
+yy=(16*2*N+1)*ifft(YY);
+yyy=[yy yy(1)];
+
+if 0
+	figure('papersize',[2 3],'paperposition',[0 0 3 2]);
+	plot(xxx/(2*pi),yyy,'k-','linewidth',2)
+	set(gca,'xlim',[0 1],'xtick',[0 .25 .5 .75 1],'xticklabel',{'$0$','$\\pi/2$','$\\pi$','$3\\pi/2$','$2\\pi$'},'ylim',[-.5,.5],'ytick',[])
+	print('-depslatex','-dashed','-color','decomp_GP.tex');
+	close
+end
+
+if 0
+	figure('papersize',[2 3],'paperposition',[0 0 3 2]);
+	k=0;
+	plot(xxx/(2*pi),real(Y(1)*exp(i*k*xxx)),'k')
+	set(gca,'xlim',[0 1],'xtick',[0 .25 .5 .75 1],'xticklabel',{'$0$','$\\pi/2$','$\\pi$','$3\\pi/2$','$2\\pi$'},'ylim',[-.5,.5],'ytick',[])
+	print('-depslatex','-dashed','-color',sprintf('decomp_SP_%i.tex',k));
+	close
+	for k=1:4
+		figure('papersize',[2 3],'paperposition',[0 0 3 2]);
+		plot(xxx/(2*pi),real(Y(1+k)*exp(i*k*xxx)+Y(2*N+2-k)*exp(-i*k*xxx)),'k')
+		set(gca,'xlim',[0 1],'xtick',[0 .25 .5 .75 1],'xticklabel',{'$0$','$\\pi/2$','$\\pi$','$3\\pi/2$','$2\\pi$'},'ylim',[-.5,.5],'ytick',[])
+		print('-depslatex','-dashed','-color',sprintf('decomp_SP_%i.tex',k));
+		close
+	end
+end
+
+if 0
+	figure('papersize',[2 3],'paperposition',[0 0 3 2]);
+	bar(0:N,abs(Y(1:N+1)))
+	set(gca,'xlim',[-.5,12.5],'xtick',[0 2 12],'xticklabel',{'0','2','$N$'},'ytick',[])
+	xlabel('$k$','interpreter','none')
+	ylabel('$|\alpha_k|$','interpreter','none')
+	print('-depslatex','-dashed','-color','spectrum.tex');
+	close
+end
+
+if 0
+	figure('papersize',[2 6],'paperposition',[0 0 6 2]);
+	k=21;
+	t=2*pi*rand*0;
+	h=plot(xxx/(2*pi),cos(k*xxx+t),'k',...
+		x/(2*pi),cos(k*x+t),'ks','markersize',2);
+	set(h,'linewidth',1)
+	set(gca,'xlim',[0 1],'xtick',[0 .25 .5 .75 1],'xticklabel',{'$0$','$\\pi/2$','$\\pi$','$3\\pi/2$','$2\\pi$'},'ylim',[-1.5,1.5],'ytick',[])
+	print('-depslatex','-solid','-color','alias_1.tex');
+	
+	line(xxx/(2*pi),cos((2*N+1-k)*xxx+t),'color','b','linewidth',2)
+	print('-depslatex','-solid','-color','alias_2.tex');
+	
+	close
+end
+
+if 0
+	figure('papersize',[2 6],'paperposition',[0 0 6 2]);
+	k=linspace(-4.5,4.5,91);
+	h=plot(k,exp(-k.^2))
+	set(h,'linewidth',2,'color','k')
+	set(gca,'xlim',[-4.5 4.5],'xtick',[-3 -1.5 0 1.5 3],'xticklabel',{'$-2N$','$-N$','$0$','$N$','$2N$'},'ylim',[0 1.2],'ytick',[])
+	grid on
+	xlabel('$k$','interpreter','none')
+	print('-depslatex','-solid','-color','alias_3.tex');
+
+
+	line(k,exp(-(k-3).^2),'color','r','linewidth',2)
+	line(k,exp(-(k+3).^2),'color','r','linewidth',2)
+	print('-depslatex','-solid','-color','alias_4.tex');
+
+	kk=linspace(-1.5,1.5,31);
+	patch([kk fliplr(kk)],[exp(-kk.^2)+exp(-(kk-3).^2)+exp(-(kk+3).^2)+exp(-(kk-6).^2)+exp(-(kk+6).^2) fliplr(exp(-kk.^2))],0,'facecolor','r')
+	line(k,exp(-k.^2)+exp(-(k-3).^2)+exp(-(k+3).^2)+exp(-(k-6).^2)+exp(-(k+6).^2),'color','b','linewidth',2);	
+	print('-depslatex','-solid','-color','alias_5.tex');
+	
+	close
+end
+
+if 1
+
+	figure('papersize',[3 4],'paperposition',[0 0 4 3]);
+	Nx=20;
+	Ny=15;
+	Kx=2/3*Nx;
+	Ky=2/3*Ny;
+	theta=linspace(0,pi/2,101);
+	kx=Kx*cos(theta);
+	ky=Ky*sin(theta);
+	plot(kx,ky,'color','b','linewidth',2)
+	line([0 Kx Kx],[Ky Ky 0],'color','r','linewidth',2)
+	set(gca,'xlim',[0 Nx],'xtick',[0 Kx Nx],'xticklabel',{'$0$','$K_x$','$N_x$'},...
+		'ylim',[0 Ny],'ytick',[0 Ky Ny],'yticklabel',{'$0$','$K_y$','$N_y$'})
+	xlabel('$k_x$','interpreter','none')
+	ylabel('$k_y$','interpreter','none')
+	print('-depslatex','-solid','-color','LAM_truncation.tex');
+
+	close
+
+end
