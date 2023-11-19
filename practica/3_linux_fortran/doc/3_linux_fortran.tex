@@ -248,6 +248,15 @@ Running the script is done with
    $   ./run.sh
 \end{verbatim}
 %
+\par
+If you get errors or warnings about ``\textbackslash r'', run the following command:
+%
+\begin{verbatim}
+   $   sed -i 's/\r$//' run.sh
+\end{verbatim}
+%
+This removes the Windows newline character (carriage return) from the file.
+%
 \section{Defining and using variables in Fortran}
 %
 \par
@@ -636,6 +645,8 @@ Writing numerical results to a file is done with the \texttt{WRITE} statement, b
       ! ... (keep subroutines from before)
 	  
 \end{verbatim}\hrule\vspace{5pt}}
+%
+After compiling and running this program, you can use the Linux \verb+ls+ command to check that the file \texttt{results.dat} was indeed created. Review its content with the Linux \verb+cat+ command; it should contain a list of numbers.
 %
 \section{Importing and plotting results in python}
 %
