@@ -1,0 +1,801 @@
+\documentclass[a4paper]{article}
+%
+\usepackage{graphicx,tikz}
+\usepackage{amsmath,amssymb}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{framed}
+%
+\graphicspath{{./figures/}}
+%
+\title{%
+	\bfseries%
+	{\large Numerical Techniques Practicum 1}\\[3ex]
+	{\Large Basics of LINUX and FORTRAN:}\\[1ex]
+	{\Large Solving the oscillation equation (again).}
+}
+%
+\author{Daan Degrauwe}
+%
+\addtolength\textwidth{4cm}
+\addtolength\evensidemargin{-2cm}
+\addtolength\oddsidemargin{-2cm}
+\addtolength\voffset{-3cm}
+\addtolength\textheight{5cm}
+\setlength\parindent{0pt}
+\setlength\parskip{5pt}
+\setlength\parsep{5pt}
+%
+\usepackage{etoolbox}
+\makeatletter
+\preto{\@verbatim}{\topsep=2pt \partopsep=2pt }
+%
+\begin{document}
+%
+\maketitle
+%
+\par
+Most NWP and climate models are Fortran codes working on Linux machines. For this reason, this practicum is aimed at teaching the basics of working in such an environment. The goal is to write a Fortran program that calculates a numerical solution for the oscillation equation, as given by
+%
+\begin{equation*}
+	\frac{d\psi}{dt}=i\kappa\psi
+\end{equation*}
+%
+with initial condition $\psi_{t=0}=1$. The exact solution is given by $\psi(t)=\exp(i\kappa t)$.
+%
+\par
+For this exercise, it is assumed that you work on the HPC (High-Performance Computer) infrastructure of UGENT.
+%
+\section{The Linux command line}
+%
+\subsection{Opening the Linux command line on the UGENT HPC}
+%
+\par
+Most things in Linux are done by executing commands from what is called the \emph{command line}. The command line is accessed by opening a terminal. Let's try this out:
+%
+\begin{enumerate}
+	\item Login on \texttt{https://login.hpc.ugent.be}
+	\item Hit the ``Files'' button and select ``Home Directory''.
+	\item Hit the ``Open in terminal'' button. This should open a terminal in a new browser tab.
+\end{enumerate}
+%
+Now, you can type a Linux command, for instance
+%
+\begin{verbatim}
+   $   date
+\end{verbatim}
+%
+Note that you shouldn't type the '\texttt{\$}'; this is just used in this document to indicate when something should be executed on the Linux command line. Hitting \texttt{ENTER} after this command prints the current date on the screen.
+%
+\par
+Note: Linux is case-sensitive. This means that typing \verb+DATE+ or \verb+Date+ will not work.
+%
+\par
+The Linux commands that are needed for this lesson will be explained during the course of the exercise. Appendix~\ref{sec:linux_commands} gives an overview of some of the most common Linux commands. At this point, you get the following tricks for free:
+%
+\begin{itemize}
+	\item Selecting text in the terminal automatically places it on the clipboard. Pasting is done with \texttt{CTRL-V}
+	\item Linux stores a history of commands you entered. To repeat a previous command, hit the \texttt{UP} arrow.
+	\item Hitting the \texttt{TAB} key autocompletes. For example, if you type \texttt{dat}, and then hit \texttt{TAB}, it will autocomplete to \texttt{date}. This also works for files and directories. If multiple options exist for autocompletion, you can hit \texttt{TAB} twice, to see the options. For instance, if you type \texttt{cat}, and then hit \texttt{TAB} twice, you should see that \texttt{cat}, \texttt{catman} and \texttt{catchsegv} are possible commands.
+\end{itemize}
+%
+\subsection{Creating, navigating and listing directories}
+%
+\par
+When working on a Linux command line, it is important to note that one works in a specific directory. Normally, this directory is visible before the \texttt{\$} symbol. $\sim$ denotes the home directory. You can also use the \verb+pwd+ command to print the working directory.
+%
+\par
+On the command line, execute the following commands one-by-one:
+%
+\begin{verbatim}
+   $   mkdir -p ${HOME}/numtech/practicum_linux_fortran
+   $   cd ${HOME}/numtech
+   $   ls
+   $   cd  practicum_linux_fortran
+\end{verbatim}
+%
+Some explanation:
+%
+\begin{itemize}
+	\item \texttt{mkdir} creates a new directory, the \texttt{-p} option lets you create nested directories.
+	\item with \texttt{cd}, you navigate to this directory
+	\item with \texttt{ls}, you list the contents of a directory
+\end{itemize}
+%
+%Note: you can also perform these actions from the \texttt{https://login.hpc.ugent.be} ``Files'' menu. 
+%
+\subsection{Creating, modifying and viewing files}
+%
+\par
+To create an (empty) file, execute the following command:
+%
+\begin{verbatim}
+   $   touch test.txt
+\end{verbatim}
+%
+To check if the file was indeed created, you can run the \texttt{ls} command.
+%
+\par
+Modifying files from the command line is possible (e.g. using the Linux program \texttt{vi} or \texttt{emacs}), but this is not so intuitive. So a different approach is used here:
+\begin{enumerate}
+	\item From \texttt{https://login.hpc.ugent.be}, open the ``Files'' menu.
+	\item Browse to the directory where you created the file.
+	\item Hit the three-dot icon next to the file, and select ``Edit'' from the drop-down menu. This should open a new tab where you can edit the file.
+	\item Put some text, and hit the ``Save'' button.
+\end{enumerate}
+%
+\par
+Next, you can check the contents of a file with the following command in the command line:
+%
+\begin{verbatim}
+   $   cat test.txt
+\end{verbatim}
+%
+which should show you the text you entere. Finally, remove the test file with 
+%
+\begin{verbatim}
+   $   rm test.txt
+\end{verbatim}
+%
+\section{My first Fortran program}
+%
+\subsection{The Fortran code}
+%
+\par
+First, create a directory for this program, and create an empty file \texttt{osceq.F90}:
+%
+\begin{verbatim}
+   $   mkdir ${HOME}/numtech/practicum_linux_fortran/osceq
+   $   cd ${HOME}/numtech/practicum_linux_fortran/osceq/
+   $   touch osceq.F90
+\end{verbatim}
+%
+\par
+Open this file in an editor, and put the following Fortran code inside:
+%
+{\vspace{10pt}\hrule\small\vspace*{-2pt}\begin{verbatim}
+	  PROGRAM OSCEQ
+	  ! a program to solve the oscillation equation
+	  
+	  WRITE (*,*) "Welcome to the Oscillation Equation Solver."
+	  
+	  END PROGRAM OSCEQ
+\end{verbatim}\hrule\vspace{5pt}}
+%
+Some explanations:
+%
+\begin{itemize}
+	\item \verb+PROGRAM+ and \verb+END PROGRAM+ statements indicate the start and end of our program
+	\item Text after a \verb+!+ denotes a comment. Use comments abundantly to make notes on the code.
+	\item The \verb+WRITE+ statement is used to print text on the screen, or to write text to a file (see later). The argument \verb+(*,*)+ means that writing should be done to screen, in default formatting.
+	\item Fortran is not case sensitive. This means it doesn't matter whether you write \verb+PROGRAM+ or \verb+program+ or \verb+PrOgRaM+.
+\end{itemize}
+%
+\subsection{Compiling\label{sec:compile}}
+%
+\par
+Before being able to execute Fortran code, it must be \emph{compiled}. This is the process of transforming a code that is (more or less) readable to humans (Fortran) into a code that's readable to computers (executable files). For this, we use a \emph{compiler}.
+%
+\par
+Compilation is quite easy (as long as your code doesn't contain any mistakes). We will use the \texttt{gfortran} compiler. To convert the Fortran code into an executable program, type the following in the command line:
+%
+\begin{verbatim}
+	  $   gfortran osceq.F90 -o osceq
+\end{verbatim}
+%
+This command tells \verb+gfortran+ the following: take the Fortran-code from the file \verb+osceq.F90+, convert it to an executable program, and put the result in the file \verb+osceq+.
+%
+\par
+If all goes well, you should now have two files in the directory: \verb+osceq.F90+ and \verb+osceq+. You can check this with the Linux \verb+ls+ command. If you don't see the file \verb+osceq+, the compilation failed, most probably due to a coding mistake in the Fortran file. If you encounter errors during the compilation, try to understand what went wrong. Always look at the first error (later errors may be consequence of the first error). You can use comments to indicate where you made a mistake in your program, in order to avoid such mistakes in the future.
+%
+\par
+\textbf{Remark}: make sure to save your Fortran file and to recompile the program after every modification of the Fortran code!
+%
+\subsection{Running\label{sec:run}}
+%
+\par
+To execute the program, type the following on the command line:
+%
+\begin{verbatim}
+   $   ./osceq
+\end{verbatim}
+%
+This will print some text to screen.
+%
+\subsection{Automating tasks with Linux scripts}
+%
+\par
+You may have noticed that recompiling and running often go together. It is therefore useful to create a Linux script that automates these two tasks. First create a file \texttt{run.sh}:
+%
+\begin{verbatim}
+   $   touch run.sh
+   $   chmod +x run.sh
+\end{verbatim}
+%
+Where the \verb+chmod+ command marks the file as an executable script.
+%
+\par
+Next, open this file in an editor tab, and put the following text in it:
+%
+{\vspace{10pt}\hrule\small\vspace*{-2pt}\begin{verbatim}
+    # Script to compile and run the oscillation equation program
+    
+    # remove executable file
+    rm osceq
+    
+    # Compile
+    echo "Compiling"
+    gfortran -o osceq osceq.F90
+    
+    # Run
+    echo "Running"
+    ./osceq
+\end{verbatim}\hrule\vspace{5pt}}
+%
+%
+Some explanations:
+%
+\begin{itemize}
+	\item Comments in Linux scripts are indicated by a \verb+#+.
+	\item The \verb+rm+ command removes the existing executable.
+	\item The \verb+echo+ command prints text to the screen.
+\end{itemize}
+%
+\par
+Running the script is done with
+%
+\begin{verbatim}
+   $   ./run.sh
+\end{verbatim}
+%
+\par
+If you get errors or warnings about ``\textbackslash r'', run the following command:
+%
+\begin{verbatim}
+   $   sed -i 's/\r$//' run.sh
+\end{verbatim}
+%
+This removes the Windows newline character (carriage return) from the file.
+%
+\section{Defining and using variables in Fortran}
+%
+\par
+Let us now introduce some variables in our Fortran program. However, before making further modifications, it is good practice to take a copy of the current directory:
+%
+\begin{verbatim}
+   $   cd ..
+   $   cp -r osceq/ osceq_v1
+   $   cd osceq/
+\end{verbatim}
+%
+With the first command, we move one directory up (so to \verb+${HOME}/numtech/practicum_linux_fortran+). The \verb+cp+ command takes a copy; to copy directories, the additional argument \verb+-r+ is required.
+%
+\par
+Now we have stored a backup, we can proceed with modifying the source code. In an editor tab, change the file \texttt{osceq.F90} as follows:
+%
+{\vspace{10pt}\hrule\small\vspace*{-2pt}\begin{verbatim}
+	  PROGRAM OSCEQ
+	  ! a program to solve the oscillation equation
+	  
+	  IMPLICIT NONE       ! safety to make sure all variables are declared
+	  
+	  ! declarations
+	  REAL    :: KAPPA    ! parameter kappa in the oscillation equation (frequency)
+	  REAL    :: DT       ! timestep
+	  INTEGER :: NT       ! number of timesteps
+	  COMPLEX :: PSI0     ! initial condition
+
+	  WRITE (*,*) "Welcome to the Oscillation Equation Solver."
+	  
+	  ! initialize parameters
+	  KAPPA = 0.5
+	  DT    = 1.0
+	  NT    = 20
+	  PSI0  = COMPLEX(1.0,0.0)      ! complex number 1.0 + 0.0 * i
+	  
+	  WRITE (*,*) 'Total integration time = ',NT*DT
+	  WRITE (*,*) 'Courant number = ',KAPPA*DT
+	  
+	  END PROGRAM OSCEQ
+\end{verbatim}\hrule\vspace{5pt}}
+%
+Compile and run this program by running the \verb+run.sh+ script.
+%
+\par
+The program contains the following new ingredients:
+%
+\begin{itemize}
+	\item The statement \verb+IMPLICIT NONE+ is a safety. It's good practice to put it in all your Fortran programs. It means that all variables should be declared explicitly.
+	\item The statements \verb+REAL+, \verb+INTEGER+ and \verb+COMPLEX+ are used to \emph{declare} variables. Declaration is where you tell the compiler what kind a certain variable is. Besides REAL, INTEGER and COMPLEX, Fortran also knows CHARACTER and LOGICAL types.
+	\item The variables are \emph{assigned} their values with the \verb+=+ operator.
+	\item The variables can then be used in calculations as shown in the \verb+WRITE+ statements
+\end{itemize}
+%
+\par
+It is important to be aware of the types of variables. For instance, the numbers \verb+2+ and \verb+5+ are of type \verb+INTEGER+. This means that \verb+5/2+ will take value \verb+2+, because dividing two variables of type \verb+INTEGER+ results in another \verb+INTEGER+! To correctly perform divisions, make sure that one of the numbers is of type \verb+REAL+. For example, \verb+5.0/2+ will give you the desired \verb+2.5+.
+%
+\par
+It should be mentioned that the organization of a Fortran program is quite strict: \emph{all} declarations should come before the executable statements. If you want to introduce a new variable, it should be declared at the beginning of the program, even if you only use it somewhere at the end.
+%
+\section{Loops}
+%
+\par
+Now we get to the actual purpose of our program: the time integration. We will do this with the forward scheme, for which
+%
+\begin{equation*}
+	\phi^{n+1}=(1+i\kappa\Delta t)\phi^n
+\end{equation*}
+%
+\par
+The time integration is a repetitive task: given the solution at the current timestep ($\phi^n$), the solution at the next timestep ($\phi^{n+1}$) is calculated. A repetitive task is implemented in Fortran with a \verb+DO+-loop.
+%
+\par
+First, store a copy of your program with
+%
+\begin{verbatim}
+   $   cd ..
+   $   cp -r osceq/ osceq_v2
+   $   cd osceq/
+\end{verbatim}
+%
+\par
+Then, modify the file \verb+osceq.F90+ as follows:
+%
+{\vspace{10pt}\hrule\small\vspace*{-2pt}\begin{verbatim}
+	  PROGRAM OSCEQ
+	  ! a program to solve the oscillation equation
+
+	  IMPLICIT NONE       ! safety to make sure all variables are declared
+
+	  ! declarations
+	  REAL    :: KAPPA    ! parameter kappa in the oscillation equation (frequency)
+	  REAL    :: DT       ! timestep
+	  INTEGER :: NT       ! number of timesteps
+	  INTEGER :: IT       ! current timestep
+	  COMPLEX :: PSI0     ! initial condition
+	  COMPLEX :: PSI, PHI ! exact and numerical time-solution
+	  COMPLEX :: II       ! imaginary unit
+
+	  ! initialize parameters
+	  KAPPA = 0.5
+	  DT    = 1.0
+	  NT    = 20
+	  PSI0  = COMPLEX(1.,0.)
+	  II    = COMPLEX(0.,1.)
+
+	  ! set initial conditions
+	  IT=0
+	  PSI=PSI0
+	  PHI=PSI0
+	  ! show values at zero'th timestep
+	  WRITE (*,*) 't = ',IT*DT,'; PSI = ',REAL(PSI),'; PHI = ',REAL(PHI)
+
+	  ! start loop over timesteps
+	  DO IT = 0,NT-1
+	  
+	    ! exact solution
+	    PSI = EXP(II*KAPPA*DT)*PSI
+
+	    ! numerical solution: forward scheme
+	    PHI = (1+II*KAPPA*DT)*PHI
+
+	    ! show values at current timestep
+	    WRITE (*,*) 't = ',IT*DT,'; PSI = ',REAL(PSI),'; PHI = ',REAL(PHI)
+
+	  ENDDO
+
+	  END PROGRAM OSCEQ
+\end{verbatim}\hrule\vspace{5pt}}
+%
+\par
+New ingredients are:
+%
+\begin{itemize}
+	\item The functions \verb+REAL()+ and \verb+EXP()+, which respectively take the real part of a complex number, and the exponential function
+	\item The statements \verb+DO IT=1,NT+ and \verb+ENDDO+ denoting the start and end of a \emph{loop}. The enumerator \verb+IT+ takes the initial value of 1, and augments every timestep by 1, until it gets larger than \verb+NT+.
+\end{itemize}
+%
+\par
+When running the program, it should become clear that the forward scheme is unstable.
+%
+\section{Conditions}
+%
+\par
+Conditional branching in Fortran is done with the \verb+IF+ statement. For instance, we could introduce the following piece of code to check for an unstable scheme:
+%
+{\vspace{10pt}\hrule\small\vspace*{-2pt}\begin{verbatim}
+	  PROGRAM OSCEQ
+	  ! a program to solve the oscillation equation
+	  
+	  ... (see previous version of the program)
+	  
+	  ! start loop over timesteps
+	  DO IT = 0,NT-1
+	  
+	    ! numerical solution: forward scheme
+	    PHI = (1+II*KAPPA*DT)*PHI
+	    
+	    ! warning if unstable
+	    IF ( ABS(PHI) > 10.0 ) THEN
+	      WRITE (*,*) 'WARNING: unstable behaviour detected'
+	    ENDIF
+	  
+	  ENDDO
+	  
+	  END PROGRAM OSCEQ
+\end{verbatim}\hrule\vspace{5pt}}
+%
+\par
+When running long enough (\verb+NT+$\geq21$), you should see a warning in the output.
+%
+\par
+More advanced conditions are achieved with \verb+.AND.+, \verb+.OR.+ and \verb+.NOT.+. If you want to execute some code when the condition is \emph{not} fulfilled, use the \verb+ELSE+ statement.
+%
+\section{Arrays}
+%
+\par
+Arrays are collections of numbers. In this program, they allow to store the solution for the full time-range. Consider the following program:
+%
+{\vspace{10pt}\hrule\small\vspace*{-2pt}\begin{verbatim}
+	  PROGRAM OSCEQ
+	  ! a program to solve the oscillation equation
+
+	  IMPLICIT NONE       ! safety to make sure all variables are declared
+
+	  ! declarations
+	  REAL    :: KAPPA    ! parameter kappa in the oscillation equation (frequency)
+	  REAL    :: DT       ! timestep
+	  INTEGER :: NT       ! number of timesteps
+	  INTEGER :: IT       ! current timestep
+	  COMPLEX :: PSI0     ! initial condition
+	  COMPLEX :: II       ! imaginary unit
+	  COMPLEX, ALLOCATABLE :: PSI(:), PHI(:) ! arrays of exact and numerical solution
+
+	  ! initialize parameters
+	  KAPPA = 0.5
+	  DT    = 1.0
+	  NT    = 100
+	  PSI0  = COMPLEX(1.,0.)
+	  II    = COMPLEX(0.,1.)
+
+	  ! allocate memory for arrays
+	  ALLOCATE(PSI(0:NT),PHI(0:NT))
+
+	  ! set initial conditions
+	  IT=0
+	  PSI(IT)=PSI0
+	  PHI(IT)=PSI0
+
+	  ! start loop over timesteps
+	  DO IT = 0,NT-1
+	  	
+	  	! exact solution
+	  	PSI(IT+1) = EXP(II*KAPPA*DT)*PSI(IT)
+	  	
+	  	! numerical solution: forward scheme
+	  	PHI(IT+1) = (1+II*KAPPA*DT)*PHI(IT)
+	  	
+	  ENDDO
+
+	  ! show values
+	  WRITE (*,*) 'PSI = ',REAL(PSI)
+	  WRITE (*,*) 'PHI = ',REAL(PHI)
+
+	  ! release memory
+	  DEALLOCATE(PSI,PHI)
+
+	  END PROGRAM OSCEQ
+\end{verbatim}\hrule\vspace{5pt}}
+%
+\par
+Working with arrays requires the following:
+%
+\begin{itemize}
+	\item During the declaration, you should add the \verb+ALLOCATABLE+ attribute, and specify the number of dimensions. In this program, one-dimensional arrays are used, hence the \verb+(:)+. Two-dimensional arrays would be declared with \verb+(:,:)+
+	\item The \verb+ALLOCATE+ statement tells the compiler what the size of the array should be, and makes sure the necessary memory is reserved for this array
+	\item A single element of an array is accessed with the \verb+()+ construct. For instance, we calculate \verb+PHI(IT)+ from \verb+PHI(IT-1)+
+	\item At the end, the reserved memory should be released with the \verb+DEALLOCATE+ statement.
+\end{itemize}
+%
+\par
+Quite important to remember when working with arrays is that you shouldn't exceed the limits of the array. For example, using \verb|PHI(NT+1)| in our program would lead to erroneous results or a crash of the program, because \verb+PHI+ was allocated with an upper bound of \verb+NT+. You can tell the compiler to detect such out-of-bound errors by compiling with the switch \verb+-fbounds-check+:
+%
+\begin{verbatim}
+	  $   gfortran -fbounds-check osceq.F90 -o osceq
+\end{verbatim}
+%
+\section{Subroutines}
+%
+\par
+To organize the code, subroutines can be used, like functions in python. A subroutine is a piece of code that can be called from somewhere else in the code. For example, let us define separate subroutines for different time schemes. Create a backup of your directory, and then modify the code in \texttt{osceq.F90} to the following:
+%
+{\vspace{10pt}\hrule\small\vspace*{-2pt}\begin{verbatim}
+	  PROGRAM OSCEQ
+	  ! a program to solve the oscillation equation
+
+	  IMPLICIT NONE       ! safety to make sure all variables are declared
+
+	  ! declarations
+	  REAL    :: KAPPA    ! parameter kappa in the oscillation equation (frequency)
+	  REAL    :: DT       ! timestep
+	  INTEGER :: NT       ! number of timesteps
+	  INTEGER :: IT       ! current timestep
+	  COMPLEX :: PSI0     ! initial condition
+	  COMPLEX :: II       ! imaginary unit
+	  COMPLEX, ALLOCATABLE :: PSI(:), PHI_FWD(:), PHI_TRPZ(:) ! arrays of exact and numerical solution
+
+	  ! initialize parameters
+	  KAPPA = 0.5
+	  DT    = 1.0
+	  NT    = 100
+	  PSI0  = COMPLEX(1.,0.)
+	  II    = COMPLEX(0.,1.)
+
+	  ! allocate memory for arrays
+	  ALLOCATE(PSI(0:NT),PHI_FWD(0:NT),PHI_TRPZ(0:NT))
+
+	  ! set initial conditions
+	  IT=0
+	  PSI(IT)=PSI0
+	  PHI_FWD(IT)=PSI0
+	  PHI_TRPZ(IT)=PSI0
+
+	  ! start loop over timesteps
+	  DO IT = 0,NT-1
+	  	
+	  	! exact solution
+	  	PSI(IT+1) = EXP(II*KAPPA*DT)*PSI(IT)
+	  	
+	  	! numerical solution: forward scheme
+	  	CALL OSCEQ_FORWARD(PHI_FWD(IT),KAPPA,DT,PHI_FWD(IT+1))
+	  	
+	  	! numerical solution: forward scheme
+	  	CALL OSCEQ_TRAPEZIUM(PHI_TRPZ(IT),KAPPA,DT,PHI_TRPZ(IT+1))
+
+	  ENDDO
+
+	  ! show values
+	  WRITE (*,*) 'PSI      = ',REAL(PSI)
+	  WRITE (*,*) 'PHI_FWD  = ',REAL(PHI_FWD)
+	  WRITE (*,*) 'PHI_TRPZ = ',REAL(PHI_TRPZ)
+
+	  ! release memory
+	  DEALLOCATE(PSI,PHI_FWD,PHI_TRPZ)
+
+	  END PROGRAM OSCEQ
+
+	  
+	  SUBROUTINE OSCEQ_FORWARD(PHI_CURRENT,KAPPA,DT,PHI_NEXT)
+	  ! subroutine to take one timestep with the forward scheme
+	  
+	  IMPLICIT NONE
+	  
+	  ! arguments
+	  COMPLEX, INTENT(IN)  :: PHI_CURRENT    ! solution at current timestep
+	  REAL,    INTENT(IN)  :: KAPPA          ! frequency
+	  REAL,    INTENT(IN)  :: DT             ! time step
+	  COMPLEX, INTENT(OUT) :: PHI_NEXT       ! solution at next timestep
+	  
+	  ! local variables
+	  COMPLEX :: II=COMPLEX(0.,1.)
+	  
+	  ! time scheme
+	  PHI_NEXT = (1+II*KAPPA*DT)*PHI_CURRENT
+	  
+	  END SUBROUTINE OSCEQ_FORWARD
+	  
+
+	  SUBROUTINE OSCEQ_TRAPEZIUM(PHI_CURRENT,KAPPA,DT,PHI_NEXT)
+	  ! subroutine to take one timestep with the trapezium scheme
+	  
+	  IMPLICIT NONE
+	  
+	  ! arguments
+	  COMPLEX, INTENT(IN)  :: PHI_CURRENT    ! solution at current timestep
+	  REAL,    INTENT(IN)  :: KAPPA          ! frequency
+	  REAL,    INTENT(IN)  :: DT             ! time step
+	  COMPLEX, INTENT(OUT) :: PHI_NEXT       ! solution at next timestep
+	  
+	  ! local variables
+	  COMPLEX :: II=COMPLEX(0.,1.)
+	  
+	  ! time scheme
+	  PHI_NEXT = (1+0.5*II*KAPPA*DT)/(1-0.5*II*KAPPA*DT)*PHI_CURRENT
+	  
+	  END SUBROUTINE OSCEQ_TRAPEZIUM	  
+\end{verbatim}\hrule\vspace{5pt}}
+%
+Some remarks on this code:
+%
+\begin{itemize}
+	\item In fact, it is common practice to put different subroutines in separate files. For this practicum, however, everything is kept in a single file. 
+	\item Calling a subroutine is done with the \verb+CALL+ statement. 
+	\item Arguments to subroutines have an \verb+INTENT+ attribute, which specifies whether it's an input (\verb+IN+) or an output argument (\verb+OUT+).
+	\item It's very important that the argument declaration in the subroutine matches the argument that is passed in the \verb+CALL+ statement! You will get strange behaviour if this is not the case. `Matching' means that the type (\verb+COMPLEX+, \ldots) should be the same, as well as the dimension if it's an array.
+	\item Variables that are declared in the main part of the program are not known in the subroutine (except if they are passed as an argument). For the example above, the imaginary unit \verb+II+ was redefined inside the subroutines.
+\end{itemize}
+%
+\section{Writing the results to a file}
+%
+\par
+Writing numerical results to a file is done with the \texttt{WRITE} statement, but the file should be opened before and closed afterwards. Change the code in the Fortran file as follows:
+%
+{\vspace{10pt}\hrule\small\vspace*{-2pt}\begin{verbatim}
+	  PROGRAM OSCEQ
+	  
+	  ! ... (keep from before)
+	  
+	  ! show values
+	  WRITE (*,*) 'PSI      = ',REAL(PSI)
+	  WRITE (*,*) 'PHI_FWD  = ',REAL(PHI_FWD)
+	  WRITE (*,*) 'PHI_TRPZ = ',REAL(PHI_TRPZ)
+	  
+	  ! write to file
+	  OPEN(UNIT=8,FILE='results.dat')
+	  WRITE (8,'(E16.8)') REAL(PSI)
+	  WRITE (8,'(E16.8)') REAL(PHI_FWD)
+	  WRITE (8,'(E16.8)') REAL(PHI_TRPZ)
+	  CLOSE(UNIT=8)
+
+	  ! release memory
+	  DEALLOCATE(PSI,PHI_FWD,PHI_TRPZ)
+
+	  END PROGRAM OSCEQ
+
+      ! ... (keep subroutines from before)
+	  
+\end{verbatim}\hrule\vspace{5pt}}
+%
+After compiling and running this program, you can use the Linux \verb+ls+ command to check that the file \texttt{results.dat} was indeed created. Review its content with the Linux \verb+cat+ command; it should contain a list of numbers.
+%
+\section{Importing and plotting results in python}
+%
+\par
+Create a Jupyter notebook in the directory where your Fortran program runs, and put the following code in a code cell:
+{\vspace{10pt}\hrule\small\vspace*{-2pt}\begin{verbatim}
+# load libraries
+%matplotlib notebook
+import matplotlib.pyplot as plt
+import numpy as np
+
+# read data from results.dat
+results=np.loadtxt('results.dat')
+
+# reshape into 3 x (nt+1) array
+results=np.reshape(results,(3,len(results)//3))
+
+# plot data
+psi=results[0,:]
+phi_fwd=results[1,:]
+phi_trpz=results[2,:]
+
+plt.figure()
+plt.plot(psi,label='exact solution')
+plt.plot(phi_fwd,label='forward scheme')
+plt.plot(phi_trpz,label='trapezium scheme')
+plt.ylim([-2,2])
+plt.legend()
+plt.show()	  
+\end{verbatim}\hrule\vspace{5pt}}
+%
+\section{Submitting jobs to the HPC queue}
+%
+\par
+So far, we have been working on the \texttt{donphan} cluster, which is okay for small computations. However, for more serious work (such as weather and climate modeling!) it is no longer possible to work interactively on a system. Instead, you need to \emph{submit} your computation script, and it will only be \emph{executed} once the required resources (CPU cores) are available on the system. This means you may have to wait for some time (maybe days!) before your results become available.
+%
+\par
+Guidelines on how to do this for the UGENT clusters can be found on \texttt{https://docs.hpc.ugent.be/Linux/}. In this practicum, we will just illustrate the general idea with a very simple job.
+%
+\par
+First, create (or modify) your compilation/run script to the following:
+%
+{\vspace{10pt}\hrule\small\vspace*{-2pt}\begin{verbatim}
+#!/bin/bash
+#PBS -N osceq_job             ## job name
+#PBS -l nodes=1:ppn=1         ## single-node job, single core
+#PBS -l walltime=0:00:10      ## estimated run time
+
+# go to right directory
+cd ${HOME}/numtech/practicum_linux_fortran/osceq
+
+# remove executable and results
+rm osceq results.dat
+
+# compile
+gfortran osceq.F90 -o osceq
+
+# run!
+./osceq
+
+\end{verbatim}\hrule\vspace{5pt}}
+%
+\par
+Next, indicate that you want to use the \texttt{doduo} cluster by executing the following on the command line:
+%
+\begin{verbatim}
+   $   module swap cluster/doduo
+\end{verbatim}
+%
+Then, submit the job with
+%
+\begin{verbatim}
+   $   qsub run.sh
+\end{verbatim}
+%
+\par
+The job will now enter the queue. You can check its status with the command \texttt{qstat}. This will tell you the job ID and whether it is queued (\texttt{Q}), running (\texttt{R}), or completed (\texttt{C}). Once it is completed, you will have the output of the job (what it normally shows on the screen) in the files \texttt{osceq\_job.o\{JOB\_ID\}} and \texttt{osceq\_job.e\{JOB\_ID\}}. Review the content of these files with
+%
+\begin{verbatim}
+   $   cat osceq_job.o* osceq_job.e*
+\end{verbatim}
+%
+\par
+Some important notes:
+%
+\begin{itemize}
+	\item Try to put a realistic runtime in your job header. If the estimated runtime is too short, your job will be killed before it finishes. If it is too long, you may have to wait for a long time before your job starts.
+	\item Test your scripts, computations, etc. before you submit them; especially for large and/or long experiments.
+	\item Only request more CPU cores when you need them. Not everything goes faster on more CPUs.
+\end{itemize}
+%
+\clearpage\appendix
+\section{Linux commands\label{sec:linux_commands}}
+%
+%\def\arraystretch{1.2}
+\par\textbf{Getting help}\\[3pt]
+\begin{tabular}{@{\hspace{.05\textwidth}}p{.2\textwidth}@{}p{.75\textwidth}@{}}
+		\texttt{man}		& show manual pages for a command (exit with \texttt{q})	\\
+										& \parbox[b]{.1\textwidth}{e.g.}\texttt{man date}	\\[5pt]
+		\texttt{help}		& show help	\\
+										& \parbox[b]{.1\textwidth}{e.g.}\texttt{help cd}	\\[5pt]
+		\texttt{--help}	& show help info	\\
+										& \parbox[b]{.1\textwidth}{e.g.}\texttt{date --help}	\\[5pt]
+\end{tabular}
+%
+\par\textbf{Navigation}\\[3pt]
+\begin{tabular}{@{\hspace{.05\textwidth}}p{.2\textwidth}@{}p{.75\textwidth}@{}}
+		\texttt{cd}			& change directory	\\
+										& \parbox[b]{.1\textwidth}{e.g.} \texttt{cd /files/\$\string{USER\string}/home/numtech/}
+										\\[5pt]
+		\texttt{cd ..}	& go one directory up	\\[5pt]
+		\texttt{pwd}		& show current directory	\\[5pt]
+		\texttt{ls}			& list contents of directory	\\[5pt]
+		\texttt{mkdir}	& create a directory	\\
+										& \parbox[b]{.1\textwidth}{e.g.}\texttt{mkdir testdir}	\\[5pt]
+\end{tabular}
+%
+\par\textbf{File manipulation}\\[3pt]
+\begin{tabular}{@{\hspace{.05\textwidth}}p{.2\textwidth}@{}p{.75\textwidth}@{}}
+		\texttt{touch}	& create empty file	\\
+										& \parbox[b]{.1\textwidth}{e.g.}\texttt{touch test.txt}	\\[5pt]
+		\texttt{cp}			& copy a file	\\
+										& \parbox[b]{.1\textwidth}{e.g.}\texttt{cp test.txt test2.txt}	\\[5pt]
+		\texttt{cp -r}	& copy a directory	\\
+										& \parbox[b]{.1\textwidth}{e.g.}\texttt{cp -r testdir/ testdir2}	\\[5pt]
+		\texttt{rm}			& remove a file	\\
+										& \parbox[b]{.1\textwidth}{e.g.}\texttt{rm test2.txt}	\\[5pt]
+		\texttt{rm -r}	& remove a directory	\\
+										& \parbox[b]{.1\textwidth}{e.g.}\texttt{rm -r testdir2}	\\[5pt]
+		\texttt{mv}			& move (rename) a file or directory	\\
+										& \parbox[b]{.1\textwidth}{e.g.}\texttt{mv test.txt test2.txt}	\\[5pt]
+\end{tabular}
+%
+\par\textbf{File contents}\\[3pt]
+\begin{tabular}{@{\hspace{.05\textwidth}}p{.2\textwidth}@{}p{.75\textwidth}@{}}
+		\texttt{cat}		& show file contents	\\
+										& \parbox[b]{.1\textwidth}{e.g.}\texttt{cat test.txt}	\\[5pt]
+		\texttt{less}		& show file contents (exit with \texttt{q})	\\
+										& \parbox[b]{.1\textwidth}{e.g.}\texttt{less test.txt}	\\[5pt]
+		\texttt{diff}		& show difference between two (text) files	\\
+										& \parbox[b]{.1\textwidth}{e.g.}\texttt{diff test.txt test2.txt}	\\[5pt]
+\end{tabular}
+%
+\par\textbf{Job submission}\\[3pt]
+\begin{tabular}{@{\hspace{.05\textwidth}}p{.2\textwidth}@{}p{.75\textwidth}@{}}
+		\texttt{qsub}		& submit a job to the queue	\\[5pt]
+		\texttt{qstat}		& inquire job status\\[5pt]
+		\texttt{qdel}		& delete a job from the queue\\[5pt]
+\end{tabular}
+%
+\end{document}
+%
