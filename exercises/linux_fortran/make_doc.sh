@@ -1,3 +1,3 @@
 #!/bin/bash
 
-../../../aux/ltxf.sh 3_linux_fortran
+../../aux/ltxf.sh linux_fortran
