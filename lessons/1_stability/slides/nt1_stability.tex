@@ -1,4 +1,4 @@
-\documentclass[aspectratio=43,9pt]{beamer}
+\documentclass[aspectratio=149,9pt]{beamer}
 \let\Tiny=\tiny
 %
 \usepackage{tikz}
@@ -250,7 +250,8 @@
     Results for $\mu=1.4$
     %
     \begin{center}
-        \includegraphics[width=.8\textwidth]{instability}
+        \vspace*{-1ex}
+        \includegraphics[width=.75\textwidth]{instability}
     \end{center}
 \end{frame}
 %
@@ -276,8 +277,9 @@
 	%
 	\frametitle{Accuracy}
 	%
+    \vspace*{-1ex}
 	%
-	Using a Taylor expansion\vspace*{2ex}
+	Using a Taylor expansion\vspace*{1ex}
 	%
 	\begin{equation*}
 		f(x_0+\Delta x) = f(x_0) +
@@ -286,7 +288,7 @@
 		+ \frac{\Delta x^3}{6} \frac{d^3 f}{dx^3} (x_0) + \dots
 	\end{equation*}\par\vspace*{2ex}
 	%
-	the error in the approximation of the derivative is\vspace*{2ex}
+	the error in the approximation of the derivative is\vspace*{1ex}
 	%
 	\begin{equation*}
 		\frac{f(x_0+\Delta x) - f(x_0)}{\Delta x}
@@ -305,7 +307,7 @@
 		- \frac{d f}{dx} (x_0) =
 		\frac{\textcolor{green!60!black}{\Delta x^2}}{6} \frac{d^3 f}{dx^3} (x_0) +
 		\frac{\Delta x^4}{120} \frac{d^5 f}{dx^5} (x_0) + \dots
-	\end{equation*}\par\vspace*{2ex}
+	\end{equation*}\par\vspace*{1ex}
 	%
 	we see that it is second-order accurate.
 	%
