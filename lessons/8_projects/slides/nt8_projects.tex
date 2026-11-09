@@ -70,15 +70,24 @@
 	%
 	\frametitle{Shallow Water Equations}
 	%
-	The linearized 1D shallow water equations (SWE) are given by:
+	\vspace*{-2ex}%
+    The linearized 1D shallow water equations (SWE) are given by:
 	%
 	\begin{align*}
 		\frac{\partial u}{\partial t}+U\frac{\partial u}{\partial x}+g\frac{\partial h}{\partial x}&=0\\
 		\frac{\partial h}{\partial t}+H\frac{\partial u}{\partial x}+U\frac{\partial h}{\partial x}&=0
 	\end{align*}
 	%
-	where $g$ is gravity, $U$ and $H$ are the constant basic-state velocity and water height, and $u(x,t)$ and $h(x,t)$ are the perturbations on the velocity and the water height.
+	where $g$ is gravity, $U$ and $H$ are the constant basic-state velocity and water height, and $u(x,t)$ and $h(x,t)$ are the perturbations on the velocity and the water height.\vspace*{5ex}
 	%
+    \par
+	The provided model is very simple:
+	%
+	\begin{myitemize}{1ex}
+		\item Leapfrog time integration
+		\item Second-order centered space differencing
+		\item Periodic boundary conditions
+	\end{myitemize}
 \end{frame}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -87,17 +96,9 @@
 	%
 	\frametitle{Shallow Water Equations}
 	%
-	The current model is very simple:
-	%
-	\begin{myitemize}{1ex}
-		\item Leapfrog time integration
-		\item Second-order centered space differencing
-		\item Periodic boundary conditions
-	\end{myitemize}
-	%
 	{\vspace*{4ex}\bfseries Student projects}:
 	%
-	\begin{myitemize}{1ex}
+	\begin{myitemize}{1.5ex}
 		\item[1.] Stagger $u$ and $h$
 		\item[2.] Compare with nonlinear model
 		\item[3.] Transform into spectral model with Fourier decomposition
@@ -242,16 +243,16 @@
 	\begin{myitemize}{2ex}
 		\item Groups of 2/3 persons
 			%
-		\item Pick a single topic (e.g. SWE-spectral); post your group + choice on Ufora forum.
+		\item Pick a single topic (e.g. SWE-spectral)
 			%
 		\item Jupyter notebooks for SWE and BVE on\\ \texttt{https://github.com/ddegrauwe/ugent\_numtech/tree/main/projects}.
 			%
 		\item More detailed background info (papers) also on github.
 			%
-		\item Support sessions: \textbf{24 November and 1 December}, 16h00-18h00; come prepared!
+		\item Support sessions: \textbf{30 November and 7 December}, 16h00-18h00; come prepared!
 			%
-		\item Report (say 5--10 pp.): deadline Friday 5 December.
-		\item Presentation for other students: Monday 8 December.
+		\item Report (say 5--10 pp.): deadline Friday 11 December.
+		\item Presentation for other students: Monday 14 December.
 	\end{myitemize}
 	%
 \end{frame}
