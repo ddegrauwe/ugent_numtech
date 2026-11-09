@@ -1019,16 +1019,16 @@
 	%
 	\frametitle{Nonlinear shallow-water equations}
 	%
-	\begin{myitemize}{2ex}
-		\item The  term $h\partial u/\partial x$ is split into a linear part and a nonlinear part as follows:
+	\vspace*{-2ex}\begin{myitemize}{2ex}
+		\item The  term $h\partial u/\partial x$ is split into a linear part and a nonlinear part as follows:\vspace*{-1ex}
 			%
 			\begin{equation*}
-				H\partial u/\partial x+\eta(x,t)\partial u/\partial x
+				H\partial u/\partial x+\eta(x,t)\partial u/\partial x\vspace*{-1ex}
 			\end{equation*}
 			%
 			where $H$ is a constant, and $\eta(x,t)=h(x,t)-H$.
 			%
-		\item A semi-implicit semi-Lagrangian two-time-level (trapezium) scheme then looks like:
+		\item A semi-implicit semi-Lagrangian two-time-level (trapezium) scheme then looks like:\vspace*{-1ex}
 			%
 			\begin{align*}
 				\frac{u^+ - u^0}{\Delta t} & = -  \frac{g}{2} \left[	\left( \frac{\partial \eta}{\partial x} \right)^+
@@ -1037,14 +1037,14 @@
 					+ \left( \frac{\partial u}{\partial x} \right)^0 \right]
 					- \ft32 \eta^0 \left( \frac{\partial u}{\partial x} \right)^0 
 					+ \ft12 \eta^- \left( \frac{\partial u}{\partial x} \right)^-
-			\end{align*}
+			\end{align*}\vspace*{-1ex}
 			%
-		\item To check the stability of this system, we linearize $u$ and $\eta$:
+		\item To check the stability of this system, we linearize $u$ and $\eta$:\vspace*{-1ex}
 			%
 			\begin{align*}
 				u	&=U+u'	\\
 				\eta&=\bar\eta+\eta'
-			\end{align*}
+			\end{align*}\vspace*{-1ex}
 			%
 			and we introduce the auxiliary variable $y^{t}=u^{t-\Delta t}$.
 	\end{myitemize}
@@ -1057,20 +1057,20 @@
 	%
 	\frametitle{Discussion}
 	%
-	\begin{myitemize}{4ex}
+	\begin{myitemize}{2ex}
 		\item The system then becomes
 			%
 			\begin{align*}
 				&\left(\begin{array}{ccc}
 					1	&	igk\Delta t/2	&	0	\\
-					iHk\Delta t/2	&	1	& 3i\bar\eta k\Delta t	\\
+					iHk\Delta t/2	&	1	& 3i\bar\eta k\Delta t/2	\\
 					0	&	0	&	1
 				\end{array}\right) \left(\begin{array}{c}u \\ \eta \\ y \end{array}\right)^{t+\Delta t}	\\
 				&\qquad=
 				e^{-ikU\Delta t}
 				\left(\begin{array}{ccc}
 					1	&	-igk\Delta t/2	&	0	\\
-					-iHk\Delta t/2	&	1	&	i\bar\eta k\Delta t	\\
+					-iHk\Delta t/2	&	1	&	i\bar\eta k\Delta t/2	\\
 					1 & 0	&	0
 				\end{array}\right) \left(\begin{array}{c}u \\ \eta \\ y \end{array}\right)^{t}\hspace*{-3em}
 			\end{align*}
@@ -1102,15 +1102,6 @@
 			Starting from the 3D Euler equations,
 			%
 			\par\vspace*{2mm}
-			\begin{minipage}[t][4cm][t]{.6\textwidth}
-				\begin{myitemize}{2ex}
-					\item<2-> we use \emph{filtered} equations to remove insignificant wave solutions (see \emph{Dynamic meteorology})
-					\item<3-> we control the nonlinearity of the advection with semi-Lagrangian methods
-					\item<4-> we treat the rest with semi-implicit methods.
-						\par
-						By cleverly choosing the nonlinear residual (or in other words choosing the reference state), one controls the stability as much as possible.
-				\end{myitemize}
-			\end{minipage}%
 			%
 			\begin{minipage}[t][4cm][t]{.33\textwidth}
 				\vspace*{5mm}%
@@ -1138,7 +1129,16 @@
 					\nabla \cdot \bm v	&=0	\\
 					\frac{D \theta}{D t}&=0
 				\end{align*}}
-			\end{minipage}
+			\end{minipage}%
+			\begin{minipage}[t][4cm][t]{.6\textwidth}
+				\begin{myitemize}{2ex}
+					\item<2-> we use \emph{filtered} equations to remove insignificant wave solutions (see \emph{Dynamic meteorology})
+					\item<3-> we control the nonlinearity of the advection with semi-Lagrangian methods
+					\item<4-> we treat the rest with semi-implicit methods.
+						\par
+						By cleverly choosing the nonlinear residual (or in other words choosing the reference state), one controls the stability as much as possible.
+				\end{myitemize}
+			\end{minipage}%
 			%
 		\item <4-> 2TL SISL schemes are used operationally in ECMWF's IFS model and in the ACCORD model.
 			%
